@@ -3,7 +3,6 @@ package dataSourceHandlers;
 import static enums.jsonProps.WarframeMarketPropName.*;
 import static main.MainRunner.getGson;
 import static utils.JSONUtils.*;
-import static utils.MiscUtils.*;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -67,19 +66,16 @@ public class WarframeMarketHandler extends DataSourceHandler{
 		return output;
 	}
 
-	public void processItems(List<? extends WarframeItem> items) throws IOException, InterruptedException{
+	public void processItems(List<? extends WarframeItem> items) throws IOException, InterruptedException{		
 		for(WarframeItem item: items){
+			if(Config.WRITE_DEBUG_INFO_TO_CONSOLE) System.out.println("Processing item: " + item.name);
+			
 			item.populateTradeStats(this);
 		}
 	}
 
 	public void processItemStandard(WarframeItem item) throws IOException, InterruptedException{
 		TradeStatsPair tradeStats = getAndProcessTradeData(item.name, item.isRanked(), item.getRankToPriceCheck());
-
-		if(Config.WRITE_OUTPUT_TO_CONSOLE){
-			dumpToConsole(item.name, tradeStats.stats48Hrs, tradeStats.stats90Days);
-		}
-
 		item.setTradeStats48Hours(tradeStats.stats48Hrs);
 		item.setTradeStats90Days(tradeStats.stats90Days);
 	}
@@ -155,49 +151,6 @@ public class WarframeMarketHandler extends DataSourceHandler{
 		}
 
 		return new StandardTradeStats(numSales, minPrice, maxPrice, totalValue/numSales);
-	}
-
-	@SuppressWarnings("unused")
-	private void dumpToConsole(String itemName, StandardTradeStats stats48Hrs, StandardTradeStats stats90Days){
-		String outputString = itemName + "   ";
-
-		boolean noTradeData = (stats48Hrs.numSales == 0 && stats90Days.numSales == 0);
-
-		if(stats48Hrs.numSales > 0){
-			outputString += "48 Hr: | ";
-			outputString += "Num Sales: " + padString(stats48Hrs.numSales + "", 8);
-			outputString += "Avg: " + padString(trimTo3DecimalPlaces(stats48Hrs.avgPrice) + "", 10);
-			outputString += "Low: " + padString(trimTo3DecimalPlaces(stats48Hrs.minPrice) + "", 10);
-			outputString += "High: " + padString(trimTo3DecimalPlaces(stats48Hrs.maxPrice) + "" , 10);
-			outputString += " |    ";
-		}
-		else if(noTradeData && Config.SKIP_ITEMS_WITH_NO_DATA){
-			//Don't print anything
-		}
-		else{
-			outputString += "48 Hr: | ";
-			outputString += evenlyPadString("NO AVAILABLE TRADE DATA", 65);
-			outputString += " |    ";
-		}
-
-		if(stats90Days.numSales > 0){
-			outputString += "90 Day: | ";
-			outputString += "Num Sales: " + padString(stats90Days.numSales + "", 8);
-			outputString += "Avg: " + padString(trimTo3DecimalPlaces(stats90Days.avgPrice) + "", 10);
-			outputString += "Low: " + padString(trimTo3DecimalPlaces(stats90Days.minPrice) + "", 10);
-			outputString += "High: " + padString(trimTo3DecimalPlaces(stats90Days.maxPrice) + "" , 10);
-			outputString += " |    ";
-		}
-		else if(noTradeData && Config.SKIP_ITEMS_WITH_NO_DATA){
-			//Don't print anything
-		}
-		else{
-			outputString += "90 Day: | ";
-			outputString += evenlyPadString("NO AVAILABLE TRADE DATA", 65);
-			outputString += " |    ";
-		}
-
-		System.out.println(outputString);
 	}
 
 	private void sleepBetweenMarketRequests() throws InterruptedException{

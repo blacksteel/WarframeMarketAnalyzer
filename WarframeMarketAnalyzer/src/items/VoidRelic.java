@@ -260,128 +260,131 @@ public class VoidRelic extends WarframeItem{
 
 		outputTokens.add(rareDrop.name); //RareDrop
 
-		outputTokens.add(commonDrop1.ducatVal);//CommonDrop1DucatVal
-		outputTokens.add(commonDrop1.avgPlatVal48Hrs);//CommonDrop1AvgPlatVal48Hrs
-		outputTokens.add(commonDrop1.avgPlatVal90Days);//CommonDrop1AvgPlatVal90Days
+		outputTokens.add(commonDrop1.ducatVal); //CommonDrop1DucatVal
+		outputTokens.add(commonDrop1.avgPlatVal48Hrs); //CommonDrop1AvgPlatVal48Hrs
+		outputTokens.add(commonDrop1.avgPlatVal90Days); //CommonDrop1AvgPlatVal90Days
 
-		outputTokens.add(commonDrop2.ducatVal);//CommonDrop2DucatVal
-		outputTokens.add(commonDrop2.avgPlatVal48Hrs);//CommonDrop2AvgPlatVal48Hrs
-		outputTokens.add(commonDrop2.avgPlatVal90Days);//CommonDrop2AvgPlatVal90Days
+		outputTokens.add(commonDrop2.ducatVal); //CommonDrop2DucatVal
+		outputTokens.add(commonDrop2.avgPlatVal48Hrs); //CommonDrop2AvgPlatVal48Hrs
+		outputTokens.add(commonDrop2.avgPlatVal90Days); //CommonDrop2AvgPlatVal90Days
 
-		outputTokens.add(commonDrop3.ducatVal);//CommonDrop3DucatVal
-		outputTokens.add(commonDrop3.avgPlatVal48Hrs);//CommonDrop3AvgPlatVal48Hrs
-		outputTokens.add(commonDrop3.avgPlatVal90Days);//CommonDrop3AvgPlatVal90Days
+		outputTokens.add(commonDrop3.ducatVal); //CommonDrop3DucatVal
+		outputTokens.add(commonDrop3.avgPlatVal48Hrs); //CommonDrop3AvgPlatVal48Hrs
+		outputTokens.add(commonDrop3.avgPlatVal90Days); //CommonDrop3AvgPlatVal90Days
 
-		outputTokens.add(uncommonDrop1.ducatVal);//UncommonDrop1DucatVal
-		outputTokens.add(uncommonDrop1.avgPlatVal48Hrs);//UncommonDrop1AvgPlatVal48Hrs
-		outputTokens.add(uncommonDrop1.avgPlatVal90Days);//UncommonDrop1AvgPlatVal90Days
+		outputTokens.add(uncommonDrop1.ducatVal); //UncommonDrop1DucatVal
+		outputTokens.add(uncommonDrop1.avgPlatVal48Hrs); //UncommonDrop1AvgPlatVal48Hrs
+		outputTokens.add(uncommonDrop1.avgPlatVal90Days); //UncommonDrop1AvgPlatVal90Days
 
-		outputTokens.add(uncommonDrop2.ducatVal);//UncommonDrop2DucatVal
-		outputTokens.add(uncommonDrop2.avgPlatVal48Hrs);//UncommonDrop2AvgPlatVal48Hrs
-		outputTokens.add(uncommonDrop2.avgPlatVal90Days);//UncommonDrop2AvgPlatVal90Days
+		outputTokens.add(uncommonDrop2.ducatVal); //UncommonDrop2DucatVal
+		outputTokens.add(uncommonDrop2.avgPlatVal48Hrs); //UncommonDrop2AvgPlatVal48Hrs
+		outputTokens.add(uncommonDrop2.avgPlatVal90Days); //UncommonDrop2AvgPlatVal90Days
 
-		outputTokens.add(rareDrop.ducatVal);//RareDropDucatVal
-		outputTokens.add(rareDrop.avgPlatVal48Hrs);//RareDropAvgPlatVal48Hrs
-		outputTokens.add(rareDrop.avgPlatVal90Days);//RareDropAvgPlatVal90Days
+		outputTokens.add(rareDrop.ducatVal); //RareDropDucatVal
+		outputTokens.add(rareDrop.avgPlatVal48Hrs); //RareDropAvgPlatVal48Hrs
+		outputTokens.add(rareDrop.avgPlatVal90Days); //RareDropAvgPlatVal90Days
 
-		outputTokens.add(commonDrop1.itemName);//CommonDrop1ItemName
-		outputTokens.add(commonDrop1.partName);//CommonDrop1PartName
+		outputTokens.add(commonDrop1.itemName); //CommonDrop1ItemName
+		outputTokens.add(commonDrop1.partName); //CommonDrop1PartName
 
-		outputTokens.add(commonDrop2.itemName);//CommonDrop2ItemName
-		outputTokens.add(commonDrop2.partName);//CommonDrop2PartName
+		outputTokens.add(commonDrop2.itemName); //CommonDrop2ItemName
+		outputTokens.add(commonDrop2.partName); //CommonDrop2PartName
 
-		outputTokens.add(commonDrop3.itemName);//CommonDrop3ItemName
-		outputTokens.add(commonDrop3.partName);//CommonDrop3PartName
+		outputTokens.add(commonDrop3.itemName); //CommonDrop3ItemName
+		outputTokens.add(commonDrop3.partName); //CommonDrop3PartName
 
-		outputTokens.add(uncommonDrop1.itemName);//UncommonDrop1ItemName
-		outputTokens.add(uncommonDrop1.partName);//UncommonDrop1PartName
+		outputTokens.add(uncommonDrop1.itemName); //UncommonDrop1ItemName
+		outputTokens.add(uncommonDrop1.partName); //UncommonDrop1PartName
 
-		outputTokens.add(uncommonDrop2.itemName);//UncommonDrop2ItemName
-		outputTokens.add(uncommonDrop2.partName);//UncommonDrop2PartName
+		outputTokens.add(uncommonDrop2.itemName); //UncommonDrop2ItemName
+		outputTokens.add(uncommonDrop2.partName); //UncommonDrop2PartName
 
-		outputTokens.add(rareDrop.itemName);//RareDropItemName
-		outputTokens.add(rareDrop.itemName);//RareDropPartName
+		outputTokens.add(rareDrop.itemName); //RareDropItemName
+		outputTokens.add(rareDrop.itemName); //RareDropPartName
 
-		outputTokens.add(relicDrops.dropsForma());//DropsForma
-		outputTokens.add(relicDrops.dropsFormaCommon);//DropsFormaCommon
-		outputTokens.add(relicDrops.dropsFormaUncommon);//DropsFormaUncommon
+		outputTokens.add(relicDrops.dropsForma()); //DropsForma
+		outputTokens.add(relicDrops.dropsFormaCommon); //DropsFormaCommon
+		outputTokens.add(relicDrops.dropsFormaUncommon); //DropsFormaUncommon
 
-		outputTokens.add(isVaulted);//IsVaulted
-		outputTokens.add(isBaroExclusive);//IsBaroExclusive
+		outputTokens.add(isVaulted); //IsVaulted
+		outputTokens.add(isBaroExclusive); //IsBaroExclusive
 
-		outputTokens.add(avgDucatValInt);//AvgDucatVal(Int)
-		outputTokens.add(avgDucatValEx);//AvgDucatVal(Ex)
-		outputTokens.add(avgDucatValFlaw);//AvgDucatVal(Flaw)
-		outputTokens.add(avgDucatValRad);//AvgDucatVal(Rad)
+		outputTokens.add(avgDucatValInt); //AvgDucatVal(Int)
+		outputTokens.add(avgDucatValEx); //AvgDucatVal(Ex)
+		outputTokens.add(avgDucatValFlaw); //AvgDucatVal(Flaw)
+		outputTokens.add(avgDucatValRad); //AvgDucatVal(Rad)
 
-		outputTokens.add(avgPlatVal48HrsInt);//AvgPlatVal48Hrs(Int)
-		outputTokens.add(avgPlatVal48HrsEx);//AvgPlatVal48Hrs(Ex)
-		outputTokens.add(avgPlatVal48HrsFlaw);//AvgPlatVal48Hrs(Flaw)
-		outputTokens.add(avgPlatVal48HrsRad);//AvgPlatVal48Hrs(Rad)
+		outputTokens.add(avgPlatVal48HrsInt); //AvgPlatVal48Hrs(Int)
+		outputTokens.add(avgPlatVal48HrsEx); //AvgPlatVal48Hrs(Ex)
+		outputTokens.add(avgPlatVal48HrsFlaw); //AvgPlatVal48Hrs(Flaw)
+		outputTokens.add(avgPlatVal48HrsRad); //AvgPlatVal48Hrs(Rad)
 
-		outputTokens.add(avgPlatVal90DaysInt);//AvgPlatVal90Days(Int)
-		outputTokens.add(avgPlatVal90DaysEx);//AvgPlatVal90Days(Ex)
-		outputTokens.add(avgPlatVal90DaysFlaw);//AvgPlatVal90Days(Flaw)
-		outputTokens.add(avgPlatVal90DaysRad);//AvgPlatVal90Days(Rad)
+		outputTokens.add(avgPlatVal90DaysInt); //AvgPlatVal90Days(Int)
+		outputTokens.add(avgPlatVal90DaysEx); //AvgPlatVal90Days(Ex)
+		outputTokens.add(avgPlatVal90DaysFlaw); //AvgPlatVal90Days(Flaw)
+		outputTokens.add(avgPlatVal90DaysRad); //AvgPlatVal90Days(Rad)
 
-		outputTokens.add(bestAvgDucatRefinement.name);//BestAvgDucatRefinement
-		outputTokens.add(bestAvgPlatRefinement48Hrs.name);//BestAvgPlatRefinement48Hrs
-		outputTokens.add(bestAvgPlatRefinement90Days.name);//BestAvgPlatRefinement90Days
+		outputTokens.add((bestAvgDucatRefinement == null) ?
+				null : trimAndCapitalizeCorrectly(bestAvgDucatRefinement.name)); //BestAvgDucatRefinement
+		outputTokens.add((bestAvgPlatRefinement48Hrs == null) ?
+				null : trimAndCapitalizeCorrectly(bestAvgPlatRefinement48Hrs.name)); //BestAvgPlatRefinement48Hrs
+		outputTokens.add((bestAvgPlatRefinement90Days == null) ?
+				null : trimAndCapitalizeCorrectly(bestAvgPlatRefinement90Days.name)); //BestAvgPlatRefinement90Days
 
-		outputTokens.add(avgDucatValDiffIntToEx);//AvgDucatValChange(Int=>Ex)
-		outputTokens.add(avgDucatValDiffIntToFlaw);//AvgDucatValChange(Int=>Flaw)
-		outputTokens.add(avgDucatValDiffIntToRad);//AvgDucatValChange(Int=>Rad)
-		outputTokens.add(avgDucatValDiffExToFlaw);//AvgDucatValChange(Ex=>Flaw)
-		outputTokens.add(avgDucatValDiffExToRad);//AvgDucatValChange(Ex=>Rad)
-		outputTokens.add(avgDucatValDiffFlawToRad);//AvgDucatValChange(Flaw=>Rad)
+		outputTokens.add(avgDucatValDiffIntToEx); //AvgDucatValChange(Int=>Ex)
+		outputTokens.add(avgDucatValDiffIntToFlaw); //AvgDucatValChange(Int=>Flaw)
+		outputTokens.add(avgDucatValDiffIntToRad); //AvgDucatValChange(Int=>Rad)
+		outputTokens.add(avgDucatValDiffExToFlaw); //AvgDucatValChange(Ex=>Flaw)
+		outputTokens.add(avgDucatValDiffExToRad); //AvgDucatValChange(Ex=>Rad)
+		outputTokens.add(avgDucatValDiffFlawToRad); //AvgDucatValChange(Flaw=>Rad)
 
-		outputTokens.add(avgPlatVal48HrsDiffIntToEx);//AvgPlatVal48HrsChange(Int=>Ex)
-		outputTokens.add(avgPlatVal48HrsDiffIntToFlaw);//AvgPlatVal48HrsChange(Int=>Flaw)
-		outputTokens.add(avgPlatVal48HrsDiffIntToRad);//AvgPlatVal48HrsChange(Int=>Rad)
-		outputTokens.add(avgPlatVal48HrsDiffExToFlaw);//AvgPlatVal48HrsChange(Ex=>Flaw)
-		outputTokens.add(avgPlatVal48HrsDiffExToRad);//AvgPlatVal48HrsChange(Ex=>Rad)
-		outputTokens.add(avgPlatVal48HrsDiffFlawToRad);//AvgPlatVal48HrsChange(Flaw=>Rad)
+		outputTokens.add(avgPlatVal48HrsDiffIntToEx); //AvgPlatVal48HrsChange(Int=>Ex)
+		outputTokens.add(avgPlatVal48HrsDiffIntToFlaw); //AvgPlatVal48HrsChange(Int=>Flaw)
+		outputTokens.add(avgPlatVal48HrsDiffIntToRad); //AvgPlatVal48HrsChange(Int=>Rad)
+		outputTokens.add(avgPlatVal48HrsDiffExToFlaw); //AvgPlatVal48HrsChange(Ex=>Flaw)
+		outputTokens.add(avgPlatVal48HrsDiffExToRad); //AvgPlatVal48HrsChange(Ex=>Rad)
+		outputTokens.add(avgPlatVal48HrsDiffFlawToRad); //AvgPlatVal48HrsChange(Flaw=>Rad)
 		
-		outputTokens.add(avgPlatVal90DaysDiffIntToEx);//AvgPlatVal90DaysChange(Int=>Ex)
-		outputTokens.add(avgPlatVal90DaysDiffIntToFlaw);//AvgPlatVal90DaysChange(Int=>Flaw)
-		outputTokens.add(avgPlatVal90DaysDiffIntToRad);//AvgPlatVal90DaysChange(Int=>Rad)
-		outputTokens.add(avgPlatVal90DaysDiffExToFlaw);//AvgPlatVal90DaysChange(Ex=>Flaw)
-		outputTokens.add(avgPlatVal90DaysDiffExToRad);//AvgPlatVal90DaysChange(Ex=>Rad)
-		outputTokens.add(avgPlatVal90DaysDiffFlawToRad);//AvgPlatVal90DaysChange(Flaw=>Rad)
+		outputTokens.add(avgPlatVal90DaysDiffIntToEx); //AvgPlatVal90DaysChange(Int=>Ex)
+		outputTokens.add(avgPlatVal90DaysDiffIntToFlaw); //AvgPlatVal90DaysChange(Int=>Flaw)
+		outputTokens.add(avgPlatVal90DaysDiffIntToRad); //AvgPlatVal90DaysChange(Int=>Rad)
+		outputTokens.add(avgPlatVal90DaysDiffExToFlaw); //AvgPlatVal90DaysChange(Ex=>Flaw)
+		outputTokens.add(avgPlatVal90DaysDiffExToRad); //AvgPlatVal90DaysChange(Ex=>Rad)
+		outputTokens.add(avgPlatVal90DaysDiffFlawToRad); //AvgPlatVal90DaysChange(Flaw=>Rad)
 
-		outputTokens.add(avgDucatValDiffPerTraceIntToEx);//AvgDucatValChangePerTrace(Int=>Ex)
-		outputTokens.add(avgDucatValDiffPerTraceIntToFlaw);//AvgDucatValChangePerTrace(Int=>Flaw)
-		outputTokens.add(avgDucatValDiffPerTraceIntToRad);//AvgDucatValChangePerTrace(Int=>Rad)
-		outputTokens.add(avgDucatValDiffPerTraceExToFlaw);//AvgDucatValChangePerTrace(Ex=>Flaw)
-		outputTokens.add(avgDucatValDiffPerTraceExToRad);//AvgDucatValChangePerTrace(Ex=>Rad)
-		outputTokens.add(avgDucatValDiffPerTraceFlawToRad);//AvgDucatValChangePerTrace(Flaw=>Rad)
+		outputTokens.add(avgDucatValDiffPerTraceIntToEx); //AvgDucatValChangePerTrace(Int=>Ex)
+		outputTokens.add(avgDucatValDiffPerTraceIntToFlaw); //AvgDucatValChangePerTrace(Int=>Flaw)
+		outputTokens.add(avgDucatValDiffPerTraceIntToRad); //AvgDucatValChangePerTrace(Int=>Rad)
+		outputTokens.add(avgDucatValDiffPerTraceExToFlaw); //AvgDucatValChangePerTrace(Ex=>Flaw)
+		outputTokens.add(avgDucatValDiffPerTraceExToRad); //AvgDucatValChangePerTrace(Ex=>Rad)
+		outputTokens.add(avgDucatValDiffPerTraceFlawToRad); //AvgDucatValChangePerTrace(Flaw=>Rad)
 
-		outputTokens.add(avgPlatVal48HrsDiffPerTraceIntToEx);//AvgPlatVal48HrsChangePerTrace(Int=>Ex)
-		outputTokens.add(avgPlatVal48HrsDiffPerTraceIntToFlaw);//AvgPlatVal48HrsChangePerTrace(Int=>Flaw)
-		outputTokens.add(avgPlatVal48HrsDiffPerTraceIntToRad);//AvgPlatVal48HrsChangePerTrace(Int=>Rad)
-		outputTokens.add(avgPlatVal48HrsDiffPerTraceExToFlaw);//AvgPlatVal48HrsChangePerTrace(Ex=>Flaw)
-		outputTokens.add(avgPlatVal48HrsDiffPerTraceExToRad);//AvgPlatVal48HrsChangePerTrace(Ex=>Rad)
-		outputTokens.add(avgPlatVal48HrsDiffPerTraceFlawToRad);//AvgPlatVal48HrsChangePerTrace(Flaw=>Rad)
+		outputTokens.add(avgPlatVal48HrsDiffPerTraceIntToEx); //AvgPlatVal48HrsChangePerTrace(Int=>Ex)
+		outputTokens.add(avgPlatVal48HrsDiffPerTraceIntToFlaw); //AvgPlatVal48HrsChangePerTrace(Int=>Flaw)
+		outputTokens.add(avgPlatVal48HrsDiffPerTraceIntToRad); //AvgPlatVal48HrsChangePerTrace(Int=>Rad)
+		outputTokens.add(avgPlatVal48HrsDiffPerTraceExToFlaw); //AvgPlatVal48HrsChangePerTrace(Ex=>Flaw)
+		outputTokens.add(avgPlatVal48HrsDiffPerTraceExToRad); //AvgPlatVal48HrsChangePerTrace(Ex=>Rad)
+		outputTokens.add(avgPlatVal48HrsDiffPerTraceFlawToRad); //AvgPlatVal48HrsChangePerTrace(Flaw=>Rad)
 		
-		outputTokens.add(avgPlatVal90DaysDiffPerTraceIntToEx);//AvgPlatVal90DaysChangePerTrace(Int=>Ex)
-		outputTokens.add(avgPlatVal90DaysDiffPerTraceIntToFlaw);//AvgPlatVal90DaysChangePerTrace(Int=>Flaw)
-		outputTokens.add(avgPlatVal90DaysDiffPerTraceIntToRad);//AvgPlatVal90DaysChangePerTrace(Int=>Rad)
-		outputTokens.add(avgPlatVal90DaysDiffPerTraceExToFlaw);//AvgPlatVal90DaysChangePerTrace(Ex=>Flaw)
-		outputTokens.add(avgPlatVal90DaysDiffPerTraceExToRad);//AvgPlatVal90DaysChangePerTrace(Ex=>Rad)
-		outputTokens.add(avgPlatVal90DaysDiffPerTraceFlawToRad);//AvgPlatVal90DaysChangePerTrace(Flaw=>Rad)
+		outputTokens.add(avgPlatVal90DaysDiffPerTraceIntToEx); //AvgPlatVal90DaysChangePerTrace(Int=>Ex)
+		outputTokens.add(avgPlatVal90DaysDiffPerTraceIntToFlaw); //AvgPlatVal90DaysChangePerTrace(Int=>Flaw)
+		outputTokens.add(avgPlatVal90DaysDiffPerTraceIntToRad); //AvgPlatVal90DaysChangePerTrace(Int=>Rad)
+		outputTokens.add(avgPlatVal90DaysDiffPerTraceExToFlaw); //AvgPlatVal90DaysChangePerTrace(Ex=>Flaw)
+		outputTokens.add(avgPlatVal90DaysDiffPerTraceExToRad); //AvgPlatVal90DaysChangePerTrace(Ex=>Rad)
+		outputTokens.add(avgPlatVal90DaysDiffPerTraceFlawToRad); //AvgPlatVal90DaysChangePerTrace(Flaw=>Rad)
 		
-		outputTokens.add(intShareAvgDucatVal);//IntShareAvgDucatVal
-		outputTokens.add(intShareAvgPlatVal48Hrs);//IntShareAvgPlatVal48Hrs
-		outputTokens.add(intShareAvgPlatVal90Days);//IntShareAvgPlatVal90Days
+		outputTokens.add(intShareAvgDucatVal); //IntShareAvgDucatVal
+		outputTokens.add(intShareAvgPlatVal48Hrs); //IntShareAvgPlatVal48Hrs
+		outputTokens.add(intShareAvgPlatVal90Days); //IntShareAvgPlatVal90Days
 
-		outputTokens.add(radShareAvgDucatVal);//RadShareAvgDucatVal
-		outputTokens.add(radShareAvgPlatVal48Hrs);//RadShareAvgPlatVal48Hrs
-		outputTokens.add(radShareAvgPlatVal90Days);//RadShareAvgPlatVal90Days
+		outputTokens.add(radShareAvgDucatVal); //RadShareAvgDucatVal
+		outputTokens.add(radShareAvgPlatVal48Hrs); //RadShareAvgPlatVal48Hrs
+		outputTokens.add(radShareAvgPlatVal90Days); //RadShareAvgPlatVal90Days
 		
 		return outputTokens.toCSV();
 	}
 	
-	private double calculateIntShareAvgDucatVal(){
+	private Double calculateIntShareAvgDucatVal(){
 		return calculateShareVal(
 				new Double[]{
 						(double)relicDrops.commonDrops.get(0).ducatVal,
@@ -399,7 +402,7 @@ public class VoidRelic extends WarframeItem{
 						INTACT.rareDropChance});
 	}
 
-	private double calculateIntShareAvgPlatVal48Hrs(){
+	private Double calculateIntShareAvgPlatVal48Hrs(){
 		return calculateShareVal(
 				new Double[]{
 						relicDrops.commonDrops.get(0).avgPlatVal48Hrs,
@@ -417,7 +420,7 @@ public class VoidRelic extends WarframeItem{
 						INTACT.rareDropChance});
 	}
 
-	private double calculateIntShareAvgPlatVal90Days(){
+	private Double calculateIntShareAvgPlatVal90Days(){
 		return calculateShareVal(
 				new Double[]{
 						relicDrops.commonDrops.get(0).avgPlatVal90Days,
@@ -435,7 +438,7 @@ public class VoidRelic extends WarframeItem{
 						INTACT.rareDropChance});
 	}
 
-	private double calculateRadShareAvgDucatVal(){
+	private Double calculateRadShareAvgDucatVal(){
 		return calculateShareVal(
 				new Double[]{
 						(double)relicDrops.commonDrops.get(0).ducatVal,
@@ -453,7 +456,7 @@ public class VoidRelic extends WarframeItem{
 						RADIANT.rareDropChance});
 	}
 
-	private double calculateRadShareAvgPlatVal48Hrs(){
+	private Double calculateRadShareAvgPlatVal48Hrs(){
 		return calculateShareVal(
 				new Double[]{
 						relicDrops.commonDrops.get(0).avgPlatVal48Hrs,
@@ -471,7 +474,7 @@ public class VoidRelic extends WarframeItem{
 						RADIANT.rareDropChance});
 	}
 
-	private double calculateRadShareAvgPlatVal90Days(){
+	private Double calculateRadShareAvgPlatVal90Days(){
 		return calculateShareVal(
 				new Double[]{
 						relicDrops.commonDrops.get(0).avgPlatVal90Days,

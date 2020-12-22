@@ -1,5 +1,7 @@
 package utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 public class MiscUtils {
@@ -67,5 +69,11 @@ public class MiscUtils {
 	public static Double divideWithNullCheck(Double a, Integer b){
 		if(a == null || b == null) return null;
 		return a/b;
+	}
+	
+	public static String getDate(long timeInMillis){
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm");    
+		Date resultdate = new Date(timeInMillis);
+		return sdf.format(resultdate);
 	}
 }

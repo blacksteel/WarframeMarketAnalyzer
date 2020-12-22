@@ -26,6 +26,7 @@ import enums.ItemType;
 import items.Mod;
 import items.PrimePart;
 import items.VoidRelic;
+import static utils.MiscUtils.getDate;
 
 public class MainRunner implements ActionListener{
 	private static Gson gson = null;
@@ -82,18 +83,23 @@ public class MainRunner implements ActionListener{
 		WarframeWikiHandler wikiHandler = new WarframeWikiHandler();
 		OutputFileWriter outputWriter = new OutputFileWriter(launchTime);
 
-		List<Mod> tradableModsList = statusHandler.handleMods();
-		List<PrimePart> primePartsList = statusHandler.handlePrimes();
+		if(Config.PROCESS_MODS){
+			List<Mod> tradableModsList = statusHandler.handleMods();
+			marketHandler.processItems(tradableModsList);
+			outputWriter.writeOutput(tradableModsList, ItemType.MOD);
+		}
 
-		marketHandler.processItems(tradableModsList);
-		marketHandler.processItems(primePartsList);
+		if(Config.PROCESS_PRIMES){
+			List<PrimePart> primePartsList = statusHandler.handlePrimes();
+			marketHandler.processItems(primePartsList);
+			outputWriter.writeOutput(primePartsList, ItemType.PRIME_PART);
 
-		List<VoidRelic> relicsList = wikiHandler.handleVoidRelics(primePartsList);
-		marketHandler.processItems(relicsList);
-
-		outputWriter.writeOutput(tradableModsList, ItemType.MOD);
-		outputWriter.writeOutput(primePartsList, ItemType.PRIME_PART);
-		outputWriter.writeOutput(relicsList, ItemType.VOID_RELIC);
+			if(Config.PROCESS_RELICS) {
+				List<VoidRelic> relicsList = wikiHandler.handleVoidRelics(primePartsList);
+				marketHandler.processItems(relicsList);
+				outputWriter.writeOutput(relicsList, ItemType.VOID_RELIC);
+			}
+		}
 	}
 
 	@Override
@@ -111,9 +117,7 @@ public class MainRunner implements ActionListener{
 
 				launchTime = System.currentTimeMillis();
 
-				if(Config.WRITE_DEBUG_INFO_TO_CONSOLE){
-					System.out.println("Starting at " + launchTime);
-				}
+				System.out.println("Starting at " + getDate(launchTime));
 
 				new SwingWorker<Void, Void>(){
 					public Void doInBackground() throws IOException, InterruptedException, IllegalAccessException,
@@ -128,19 +132,15 @@ public class MainRunner implements ActionListener{
 									null, "Something went horribly wrong =(", "Well crap...", JOptionPane.ERROR_MESSAGE);
 							System.exit(1);
 						}
-						
+
 						return null;
 					}
 
 					public void done(){
-						if(Config.WRITE_DEBUG_INFO_TO_CONSOLE){
 							long endTime = System.currentTimeMillis();
 							long runTime = (endTime - launchTime);
 
-							if(Config.WRITE_DEBUG_INFO_TO_CONSOLE){
-								System.out.println("Ending at " + endTime + ". Total runtime was " + runTime);
-							}
-						}
+								System.out.println("Ending at " + getDate(endTime) + ". Total runtime was " + (runTime/60000) + " minutes.");
 
 						JOptionPane.showMessageDialog(
 								null,
@@ -166,7 +166,7 @@ public class MainRunner implements ActionListener{
 	}
 
 	public static Gson getGson(){
-		if(gson == null) {
+		if(gson == null){
 			gson = new Gson();
 		}
 
