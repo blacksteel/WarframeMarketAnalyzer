@@ -1,6 +1,7 @@
 package tradeStats;
 
-import static enums.SharedString.NOT_APPLICABLE;
+import utils.TokenList;
+
 
 public class StandardTradeStats extends TradeStats{
 	public final int numSales;
@@ -17,17 +18,21 @@ public class StandardTradeStats extends TradeStats{
 
 	@Override
 	public String toOutputString(){
-		String output = "";
+		TokenList outputTokens = new TokenList();
 		
 		if(numSales > 0){
-			output += (avgPrice + "," + minPrice + "," + maxPrice + ",");
+			outputTokens.add(avgPrice);
+			outputTokens.add(minPrice);
+			outputTokens.add(maxPrice);
 		}
 		else{
-			output += (NOT_APPLICABLE.value + "," + NOT_APPLICABLE.value + "," + NOT_APPLICABLE.value + ",");
+			outputTokens.addNull();
+			outputTokens.addNull();
+			outputTokens.addNull();
 		}
 		
-		output += numSales;
+		outputTokens.add(numSales);
 		
-		return output;
+		return outputTokens.toCSV();
 	}
 }

@@ -1,11 +1,12 @@
 package tradeStats;
 
-import static enums.SharedString.NOT_APPLICABLE;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import enums.VoidRelicRefinement;
+import utils.TokenList;
+
+import static enums.VoidRelicRefinement.*;
 
 public class VoidRelicTradeStats extends TradeStats{
 	public final Map<VoidRelicRefinement, StandardTradeStats> tradeStats;
@@ -16,26 +17,39 @@ public class VoidRelicTradeStats extends TradeStats{
 
 	@Override
 	public String toOutputString(){
-		String output = "";
-		String numSalesString = "";
+		TokenList outputTokens = new TokenList();
+		TokenList numSalesTokens = new TokenList();
 
+		StandardTradeStats theseTradeStats;
+		
 		for(VoidRelicRefinement refinement: VoidRelicRefinement.values()){
-			StandardTradeStats theseTradeStats = tradeStats.get(refinement);
-
-			if(theseTradeStats.numSales > 0){
-				output += (theseTradeStats.avgPrice + "," + theseTradeStats.minPrice + "," + theseTradeStats.maxPrice + ",");
-			}
-			else{
-				output += (NOT_APPLICABLE.value + "," + NOT_APPLICABLE.value + "," + NOT_APPLICABLE.value + ",");
-			}
-
-			numSalesString += theseTradeStats.numSales + ",";
+			theseTradeStats = tradeStats.get(refinement);
+			outputTokens.add((theseTradeStats.numSales > 0) ? theseTradeStats.avgPrice : null);
+			numSalesTokens.add(theseTradeStats.numSales);
 		}
 		
-		//Drop the last comma
-		numSalesString = numSalesString.substring(0, numSalesString.length() - 1);
-		output += numSalesString;
+		theseTradeStats = tradeStats.get(INTACT);
+		if(theseTradeStats.numSales > 0){
+			outputTokens.add(theseTradeStats.minPrice);
+			outputTokens.add(theseTradeStats.maxPrice);
+		}
+		else{
+			outputTokens.addNull();
+			outputTokens.addNull();
+		}
+		
+		theseTradeStats = tradeStats.get(RADIANT);
+		if(theseTradeStats.numSales > 0){
+			outputTokens.add(theseTradeStats.minPrice);
+			outputTokens.add(theseTradeStats.maxPrice);
+		}
+		else{
+			outputTokens.addNull();
+			outputTokens.addNull();
+		}
+		
+		outputTokens.addAll(numSalesTokens);
 
-		return output;
+		return outputTokens.toCSV();
 	}
 }

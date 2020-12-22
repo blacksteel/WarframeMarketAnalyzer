@@ -40,17 +40,13 @@ public class WarframeStatusHandler extends DataSourceHandler{
 	}
 	
 	public List<Mod> handleMods() throws IOException, InterruptedException{
-		String modsPayload = getFromServer(WF_STATUS_URL_MODS_SUFFIX, new String[]{}, new String[]{});
+		String modsPayload = getFromDataSource(WF_STATUS_URL_MODS_SUFFIX, new String[]{}, new String[]{});
 		JsonArray modsArray = getGson().fromJson(modsPayload, JsonArray.class);
 		List<Mod> tradableModsList = new ArrayList<>();
-
-		//Unforunately we have to do this hacky workaround because our data source's "tradable" property
-		//has proven to be unreliable
-		List<String> tradableItemNames = WarframeMarketHandler.getTradableItemNamesList();
 		
 		for(JsonElement element: modsArray){
 			if(!FLAWED_MOD_UNIQUE_NAME_SNIPPET.containsValue(getStrProp(element, UNIQUE_NAME)) &&
-					tradableItemNames.contains(getStrProp(element, SIMPLE_NAME))){
+					WarframeMarketHandler.isTradableItem(getStrProp(element, SIMPLE_NAME))){
 				tradableModsList.add(new Mod(element));
 			}
 		}
@@ -61,7 +57,7 @@ public class WarframeStatusHandler extends DataSourceHandler{
 	}
 
 	public List<PrimePart> handlePrimes() throws IOException, InterruptedException{
-		String framesPayload = getFromServer(WF_STATUS_URL_FRAMES_SUFFIX, new String[]{}, new String[]{});
+		String framesPayload = getFromDataSource(WF_STATUS_URL_FRAMES_SUFFIX, new String[]{}, new String[]{});
 		JsonArray framesArray = getGson().fromJson(framesPayload, JsonArray.class);
 
 		List<PrimePart> primePartsList = new ArrayList<>();
@@ -73,7 +69,7 @@ public class WarframeStatusHandler extends DataSourceHandler{
 			}
 		}
 
-		String weaponsPayload = getFromServer(WF_STATUS_URL_WEAPONS_SUFFIX, new String[]{}, new String[]{});
+		String weaponsPayload = getFromDataSource(WF_STATUS_URL_WEAPONS_SUFFIX, new String[]{}, new String[]{});
 		JsonArray weaponList = getGson().fromJson(weaponsPayload, JsonArray.class);
 
 		for(JsonElement element: weaponList){
@@ -89,7 +85,7 @@ public class WarframeStatusHandler extends DataSourceHandler{
 		otherPrimes.addAll(Arrays.asList(PrimeSpecialCase.values()));
 
 		for(PrimeItemEnum item: otherPrimes){
-			String payload = getFromServer(getWFStatusURLItemLookupSuffix(item.getItemName()), new String[]{}, new String[]{});
+			String payload = getFromDataSource(getWFStatusURLItemLookupSuffix(item.getItemName()), new String[]{}, new String[]{});
 			JsonObject jsonObject = getGson().fromJson(payload, JsonObject.class);
 			primePartsList.addAll(getPrimeParts(jsonObject, item.getType()));
 		}
@@ -125,6 +121,12 @@ public class WarframeStatusHandler extends DataSourceHandler{
 				if(componentObject.has(DUCATS.value)) {
 					//Prime part
 					String partName = getStrProp(componentObject, SIMPLE_NAME);
+					
+					//Special case
+					if(KAVASA.containsValue(partName)){
+						partName = partName.replace("Kavasa Prime", "").trim();
+					}
+					
 					int numInFullSet = getIntProp(componentObject, NUM_IN_SET);
 					int ducats = getIntProp(componentObject, DUCATS);
 

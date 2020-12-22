@@ -29,7 +29,7 @@ import items.VoidRelic;
 
 public class MainRunner implements ActionListener{
 	private static Gson gson = null;
-	
+
 	private long launchTime;
 
 	private JFrame frame;
@@ -81,13 +81,13 @@ public class MainRunner implements ActionListener{
 		WarframeMarketHandler marketHandler = new WarframeMarketHandler();
 		WarframeWikiHandler wikiHandler = new WarframeWikiHandler();
 		OutputFileWriter outputWriter = new OutputFileWriter(launchTime);
-		
+
 		List<Mod> tradableModsList = statusHandler.handleMods();
 		List<PrimePart> primePartsList = statusHandler.handlePrimes();
-		
+
 		marketHandler.processItems(tradableModsList);
 		marketHandler.processItems(primePartsList);
-		
+
 		List<VoidRelic> relicsList = wikiHandler.handleVoidRelics(primePartsList);
 		marketHandler.processItems(relicsList);
 
@@ -118,7 +118,17 @@ public class MainRunner implements ActionListener{
 				new SwingWorker<Void, Void>(){
 					public Void doInBackground() throws IOException, InterruptedException, IllegalAccessException,
 					IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-						runAnalyzer();
+						try{
+							runAnalyzer();
+						}
+						catch(Exception ex){
+							ex.printStackTrace();
+
+							JOptionPane.showMessageDialog(
+									null, "Something went horribly wrong =(", "Well crap...", JOptionPane.ERROR_MESSAGE);
+							System.exit(1);
+						}
+						
 						return null;
 					}
 
@@ -154,12 +164,12 @@ public class MainRunner implements ActionListener{
 			System.exit(1);
 		}
 	}
-	
+
 	public static Gson getGson(){
 		if(gson == null) {
 			gson = new Gson();
 		}
-		
+
 		return gson;
 	}
 }

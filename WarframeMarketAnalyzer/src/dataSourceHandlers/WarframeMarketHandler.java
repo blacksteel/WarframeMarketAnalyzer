@@ -40,7 +40,11 @@ public class WarframeMarketHandler extends DataSourceHandler{
 		super(WF_MARKET_BASE_URL);
 	}
 
-	protected static List<String> getTradableItemNamesList() throws IOException{
+	protected static boolean isTradableItem(String itemName) throws IOException{
+		return getTradableItemNamesList().contains(itemName.toLowerCase());
+	}
+	
+	private static List<String> getTradableItemNamesList() throws IOException{
 		if(tradableItemNamesList == null) {
 			tradableItemNamesList = getTradableItemsListFromMarket();
 		}
@@ -57,7 +61,7 @@ public class WarframeMarketHandler extends DataSourceHandler{
 		JsonArray tradableItemsArray = getJsonArray(getJsonObj(tradableItemsObject, PAYLOAD), ITEMS);
 
 		for(Iterator<JsonElement> iter = tradableItemsArray.iterator(); iter.hasNext();){
-			output.add(getStrProp(iter.next(), ITEM_NAME));
+			output.add(getStrProp(iter.next(), ITEM_NAME).toLowerCase());
 		}
 
 		return output;
@@ -155,7 +159,7 @@ public class WarframeMarketHandler extends DataSourceHandler{
 
 	@SuppressWarnings("unused")
 	private void dumpToConsole(String itemName, StandardTradeStats stats48Hrs, StandardTradeStats stats90Days){
-		String outputString = itemName;
+		String outputString = itemName + "   ";
 
 		boolean noTradeData = (stats48Hrs.numSales == 0 && stats90Days.numSales == 0);
 
@@ -207,7 +211,7 @@ public class WarframeMarketHandler extends DataSourceHandler{
 	}
 
 	private String getWFMarketURLItemStatsSuffix(String itemName){
-		itemName = itemName.trim().toLowerCase().replace(" ", "_");
+		itemName = itemName.trim().toLowerCase().replace(" ", "_").replace("-", "_").replace("'", "").replace("&", "and");
 		return "/" + itemName + WF_MARKET_URL_ITEM_STATS_SUFFIX;
 	}
 

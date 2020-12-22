@@ -4,14 +4,15 @@ import enums.jsonProps.interfaces.JSONPropName;
 
 public enum WarframeWikiPropName implements JSONPropName{
 	DATA("data"), //JSONObject
-	RELICS("relics"), //JSONArray
+	RELICS("Relics"), //JSONArray
 	RELIC_ERA("Tier"), //String
-	RELIC_NAME("name"), //String
-	RELIC_DROPS("drops"), //JSONArray
-	IS_VAULTED("isVaulted"), //Int
-	DROPPED_ITEM_NAME("item"), //String
-	DROPPED_ITEM_PART("part"), //String
-	DROPPED_ITEM_RARITY("rarity"); //String
+	RELIC_NAME("Name"), //String
+	RELIC_DROPS("Drops"), //JSONArray
+	IS_VAULTED("IsVaulted"), //Int
+	IS_BARO_EXCLUSIVE("IsBaro"), //Int
+	DROPPED_ITEM_NAME("Item"), //String
+	DROPPED_ITEM_PART("Part"), //String
+	DROPPED_ITEM_RARITY("Rarity"); //String
 	
 	public final String value;
 	

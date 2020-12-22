@@ -9,6 +9,7 @@ import java.util.List;
 
 import enums.ItemType;
 import items.WarframeItem;
+import utils.TokenList;
 
 public class OutputFileWriter{
 	protected static final String OUTPUT_FILE_NAME_SUFFIX_MODS = "MODS";
@@ -32,16 +33,17 @@ public class OutputFileWriter{
 		PrintWriter outputWriter = getOutputWriter(itemType);
 		
 		try{
+			TokenList outputTokens = new TokenList();
 			String tradeStatsHeader48Hrs = itemType.getTradeStatsHeader48Hrs().trim();
 			String tradeStatsHeader90Days = itemType.getTradeStatsHeader90Days().trim();
 			String headerSuffix = itemType.getHeaderSuffix().trim();
 			
-			String outputHeader = SHARED_OUTPUT_FILE_HEADER;
-			if(tradeStatsHeader48Hrs.length() > 0) outputHeader += "," + tradeStatsHeader48Hrs;
-			if(tradeStatsHeader90Days.length() > 0) outputHeader += "," + tradeStatsHeader90Days;
-			if(headerSuffix.length() > 0) outputHeader += "," + headerSuffix;
+			outputTokens.add(SHARED_OUTPUT_FILE_HEADER);
+			if(tradeStatsHeader48Hrs.length() > 0) outputTokens.add(tradeStatsHeader48Hrs);
+			if(tradeStatsHeader90Days.length() > 0) outputTokens.add(tradeStatsHeader90Days);
+			if(headerSuffix.length() > 0) outputTokens.add(headerSuffix);
 			
-			outputWriter.println(outputHeader);
+			outputWriter.println(outputTokens.toCSV());
 			
 			for(WarframeItem item: items) {
 				String outputLine = buildOutputLine(item);
@@ -77,17 +79,18 @@ public class OutputFileWriter{
 	}
 	
 	private static String buildOutputLine(WarframeItem item){
-		String outputLine = item.name + ",";
-
-		outputLine += item.getTradeStats48Hrs().toOutputString();
-		outputLine += item.getTradeStats90Days().toOutputString();
+		TokenList outputTokens = new TokenList();
 		
-		String dataSuffix = item.getDataSuffix();
+		outputTokens.add(item.name);
 
-		if(!dataSuffix.trim().isEmpty()){
-			outputLine += "," + dataSuffix;
-		}
-
-		return outputLine;
+		String tradeStats48Hrs = item.getTradeStats48Hrs().toOutputString().trim();
+		String tradeStats90Days = item.getTradeStats90Days().toOutputString().trim();
+		String dataSuffix = item.getDataSuffix().trim();
+		
+		if(tradeStats48Hrs.length() > 0) outputTokens.add(tradeStats48Hrs);
+		if(tradeStats90Days.length() > 0) outputTokens.add(tradeStats90Days);
+		if(dataSuffix.length() > 0) outputTokens.add(dataSuffix);
+		
+		return outputTokens.toCSV();
 	}
 }
