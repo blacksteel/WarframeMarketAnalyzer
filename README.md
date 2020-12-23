@@ -8,7 +8,7 @@ https://www.reddit.com/r/Warframe/comments/kc8ngt/introducing_a_very_very_very_a
 
 https://www.reddit.com/r/Warframe/comments/khydoe/introducing_warframemarketanalyzer_v002_alpha/
 
-If you're a programmer and you're interested in helping to develop this project, let us know; we're always open to help.
+If you're a programmer and you're interested in helping to develop this project, let us know; we're always open to collaboration.  
 If you're interested in helping to support development financially, you can find our Patreon page here: https://www.patreon.com/SeizeTheNightSoftware
 All of our software is free, ad-less, and open-source and your support helps us keep it that way!
 
