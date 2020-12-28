@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 import main.AnalysisInvoker;
 
-public class MainPanel extends JFrame {
+public class MainPanel extends JFrame implements IPackListener{
 
 	private JPanel contentPanel;
 	private OptionPanel optionPanel;
@@ -28,7 +28,6 @@ public class MainPanel extends JFrame {
 
 		getContentPane().add(contentPanel);
 
-//		setSize(220, 90);
 		pack();
 
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -45,5 +44,11 @@ public class MainPanel extends JFrame {
 		
 		// TODO Clean this up
 		new AnalysisInvoker().invokeAnalysis(optionPanel);
+	}
+	
+	@Override
+	public void resize() {
+		pack();
+		setLocationRelativeTo(null);
 	}
 }
