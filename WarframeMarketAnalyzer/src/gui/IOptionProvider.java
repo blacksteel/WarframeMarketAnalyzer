@@ -1,4 +1,4 @@
-package main;
+package gui;
 
 public interface IOptionProvider {
 	public boolean processMods();

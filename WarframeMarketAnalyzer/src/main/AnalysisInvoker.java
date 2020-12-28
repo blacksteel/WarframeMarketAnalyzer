@@ -2,53 +2,38 @@ package main;
 
 import static utils.MiscUtils.getDate;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
 import dataSourceHandlers.WarframeMarketHandler;
 import dataSourceHandlers.WarframeStatusHandler;
 import dataSourceHandlers.WarframeWikiHandler;
 import enums.ItemType;
+import gui.IOptionProvider;
 import items.Mod;
 import items.PrimePart;
 import items.VoidRelic;
 
-public class AnalysisInvoker implements ActionListener {
-
-	private JPanel contentPanel;
-	private IOptionProvider optionProvider;
+public class AnalysisInvoker {
 	private long launchTime;
 
-	public AnalysisInvoker(JPanel contentPanel, IOptionProvider optionProvider) {
-		this.contentPanel = contentPanel;
-		this.optionProvider = optionProvider;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void invokeAnalysis(IOptionProvider optionProvider) {
 		try {
-			contentPanel.removeAll();
-			contentPanel.add(new ProgressPanel());
-	
-			contentPanel.revalidate();
-			contentPanel.repaint();
 	
 			launchTime = System.currentTimeMillis();
 	
 			System.out.println("Starting at " + getDate(launchTime));
 	
 			new SwingWorker<Void, Void>(){
+				@Override
 				public Void doInBackground() throws IOException, InterruptedException, IllegalAccessException,
 				IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 					try{
-						runAnalyzer();
+						runAnalyzer(optionProvider);
 					}
 					catch(Exception ex){
 						ex.printStackTrace();
@@ -61,6 +46,7 @@ public class AnalysisInvoker implements ActionListener {
 					return null;
 				}
 	
+				@Override
 				public void done(){
 						long endTime = System.currentTimeMillis();
 						long runTime = (endTime - launchTime);
@@ -86,7 +72,7 @@ public class AnalysisInvoker implements ActionListener {
 		}
 	}
 
-	private void runAnalyzer() throws IOException, InterruptedException, IllegalAccessException,
+	private void runAnalyzer(IOptionProvider optionProvider) throws IOException, InterruptedException, IllegalAccessException,
 	IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
 		WarframeStatusHandler statusHandler = new WarframeStatusHandler();
 		WarframeMarketHandler marketHandler = new WarframeMarketHandler();
