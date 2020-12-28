@@ -39,5 +39,15 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 		usedList = new FieldList<T>(enumClass, EnumSet.noneOf(enumClass));
 		add(usedList);
 	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		unusedList.setEnabled(enabled);
+		removeAll.setEnabled(enabled);
+		removeOne.setEnabled(enabled);
+		addOne.setEnabled(enabled);
+		addAll.setEnabled(enabled);
+		usedList.setEnabled(enabled);
+	}
 
 }

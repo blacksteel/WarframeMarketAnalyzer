@@ -38,4 +38,9 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JScrollPane {
 		}		
 		return new JList<>(model);
 	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		fieldList.setEnabled(enabled);
+	}
 }

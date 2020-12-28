@@ -11,7 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import enums.fields.ModFieldEnum;
 import enums.fields.PrimeFieldEnum;
+import enums.fields.RelicFieldEnum;
 import main.Config;
 
 public class OptionPanel extends JPanel implements IOptionProvider {
@@ -24,9 +26,9 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 	// TODO Add sub checkboxes for things like conclave, vaulted, sets
 	
 	private JCheckBox enableAdvanced;
-	private FieldSelector<PrimeFieldEnum> modSelector;
+	private FieldSelector<ModFieldEnum> modSelector;
 	private FieldSelector<PrimeFieldEnum> primeSelector;
-	private FieldSelector<PrimeFieldEnum> relicSelector;
+	private FieldSelector<RelicFieldEnum> relicSelector;
 
 	private JButton runButton;
 	
@@ -63,6 +65,13 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		c.gridwidth = 1;
 		
 		processMods = new JCheckBox("Process Mods:", Config.PROCESS_MODS);
+		processMods.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				syncFieldSelectorsEnabled();
+			}
+		});
 		c.gridx = 0;
 		c.gridy = y;
 		add(processMods, c);
@@ -76,6 +85,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 				if (!processPrimes.isSelected()) {
 					processRelics.setSelected(false);
 				}
+				syncFieldSelectorsEnabled();
 			}
 		});
 		c.gridx = 2;
@@ -91,6 +101,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 				if (processRelics.isSelected()) {
 					processPrimes.setSelected(true);
 				}
+				syncFieldSelectorsEnabled();
 			}
 		});
 		c.gridx = 4;
@@ -102,6 +113,12 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 
 		return y;
 	}
+	
+	private void syncFieldSelectorsEnabled() {
+		modSelector.setEnabled(processMods.isSelected());
+		primeSelector.setEnabled(processPrimes.isSelected());
+		relicSelector.setEnabled(processRelics.isSelected());
+	}
 
 	private int addAdvanced(IPackListener packListener, GridBagConstraints c, int y) {
 
@@ -110,7 +127,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		c.gridwidth = 1;
 		c.ipadx = 10;
 		
-		modSelector = new FieldSelector<>(PrimeFieldEnum.class);
+		modSelector = new FieldSelector<>(ModFieldEnum.class);
 		modSelector.setVisible(false);
 		c.gridx = 0;
 		c.gridy = y;
@@ -130,7 +147,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		c.gridy = y;
 		add(new JSeparator(SwingConstants.VERTICAL),c);
 		
-		relicSelector = new FieldSelector<>(PrimeFieldEnum.class);
+		relicSelector = new FieldSelector<>(RelicFieldEnum.class);
 		relicSelector.setVisible(false);
 		c.gridx = 4;
 		c.gridy = y;
