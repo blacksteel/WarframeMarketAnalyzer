@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.EnumSet;
 
 import javax.swing.BoxLayout;
@@ -13,30 +15,63 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 	private FieldList<T> unusedList;
 	private JPanel buttonPanel;
 	private JButton removeAll;
-	private JButton removeOne;
-	private JButton addOne;
+	private JButton removeSelected;
+	private JButton addSelected;
 	private JButton addAll;
 	private FieldList<T> usedList;
 	
 	public FieldSelector(Class<T> enumClass) {
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		
-		unusedList = new FieldList<T>(enumClass, EnumSet.allOf(enumClass));
+		unusedList = new FieldList<T>("Unused", enumClass, EnumSet.noneOf(enumClass));
 		add(unusedList);
 		
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
 		removeAll = new JButton("<<");
+		removeAll.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				unusedList.addFields(EnumSet.allOf(enumClass));
+				usedList.removeFields(EnumSet.allOf(enumClass));
+			}
+		});
 		buttonPanel.add(removeAll);
-		removeOne = new JButton("<");
-		buttonPanel.add(removeOne);
-		addOne = new JButton(">");
-		buttonPanel.add(addOne);
+
+		removeSelected = new JButton("<");
+		removeSelected.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EnumSet<T> selected = usedList.getSelectedFields();
+				unusedList.addFields(selected);
+				usedList.removeFields(selected);
+			}
+		});
+		buttonPanel.add(removeSelected);
+
+		addSelected = new JButton(">");
+		addSelected.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EnumSet<T> selected = unusedList.getSelectedFields();
+				unusedList.removeFields(selected);
+				usedList.addFields(selected);
+			}
+		});
+		buttonPanel.add(addSelected);
+
 		addAll = new JButton(">>");
+		addAll.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				unusedList.removeFields(EnumSet.allOf(enumClass));
+				usedList.addFields(EnumSet.allOf(enumClass));
+			}
+		});
 		buttonPanel.add(addAll);
 		add(buttonPanel);
 		
-		usedList = new FieldList<T>(enumClass, EnumSet.noneOf(enumClass));
+		usedList = new FieldList<T>("Used", enumClass, EnumSet.allOf(enumClass));
 		add(usedList);
 	}
 	
@@ -44,8 +79,8 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 	public void setEnabled(boolean enabled) {
 		unusedList.setEnabled(enabled);
 		removeAll.setEnabled(enabled);
-		removeOne.setEnabled(enabled);
-		addOne.setEnabled(enabled);
+		removeSelected.setEnabled(enabled);
+		addSelected.setEnabled(enabled);
 		addAll.setEnabled(enabled);
 		usedList.setEnabled(enabled);
 	}
