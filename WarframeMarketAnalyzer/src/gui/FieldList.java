@@ -1,7 +1,9 @@
 package gui;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -70,8 +72,8 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 	    return included;
 	}
 	
-	public EnumSet<T> getIncludedFields() {
-		EnumSet<T> included = EnumSet.noneOf(enumClass);
+	public List<T> getIncludedFields() {
+		List<T> included = new ArrayList<>();
 		// TODO This could probably be done more efficiently
 		for (T field : enumClass.getEnumConstants()) {
 			if (fieldModel.contains(field)) {

@@ -1,14 +1,14 @@
 package enums.fields;
 
 public enum ModFieldEnum implements IFieldEnum {
-	Avg48("48HrAvg"),
-	Low48("48HrLow"),
-	High48("48HrHigh"),
-	Num48("48HrNumSales"),
-	Avg90("90DayAvg"),
-	Low90("90DayLow"),
-	High90("90DayHigh"),
-	Num90("90DayNumSales"),
+	Avg48Hr("48HrAvg"),
+	Low48Hr("48HrLow"),
+	High48Hr("48HrHigh"),
+	Num48Hr("48HrNumSales"),
+	Avg90Day("90DayAvg"),
+	Low90Day("90DayLow"),
+	High90Day("90DayHigh"),
+	Num90Day("90DayNumSales"),
 	Rank,
 	MaxRank,
 	Type,

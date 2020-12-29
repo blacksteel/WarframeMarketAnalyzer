@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -206,12 +207,27 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 	}
 
 	@Override
+	public List<ModFieldEnum> getModFields() {
+		return modSelector.getFields();
+	}
+
+	@Override
 	public boolean processRelics() {
 		return processRelics.isSelected();
+	}
+	
+	@Override
+	public List<RelicFieldEnum> getRelicFields() {
+		return relicSelector.getFields();
 	}
 
 	@Override
 	public boolean processPrimes() {
 		return processPrimes.isSelected();
+	}
+	
+	@Override
+	public List<PrimeFieldEnum> getPrimeFields() {
+		return primeSelector.getFields();
 	}
 }

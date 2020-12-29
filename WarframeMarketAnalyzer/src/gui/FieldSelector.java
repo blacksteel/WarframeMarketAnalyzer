@@ -3,6 +3,7 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumSet;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -83,6 +84,10 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 		addSelected.setEnabled(enabled);
 		addAll.setEnabled(enabled);
 		usedList.setEnabled(enabled);
+	}
+	
+	public List<T> getFields() {
+		return usedList.getIncludedFields();
 	}
 
 }
