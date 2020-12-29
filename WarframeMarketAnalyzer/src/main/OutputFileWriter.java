@@ -8,7 +8,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import enums.ItemType;
+import enums.fields.IFieldEnum;
 import items.WarframeItem;
+import main.results.TypeResults;
 import utils.TokenList;
 
 public class OutputFileWriter{
@@ -28,15 +30,15 @@ public class OutputFileWriter{
 		timestamp = "" + launchTime;
 	}
 	
-	protected void writeOutput(List<? extends WarframeItem> items, ItemType itemType) throws IOException,
+	protected <T2 extends Enum<T2> & IFieldEnum> void writeOutput(List<? extends WarframeItem> items, TypeResults<T2> results) throws IOException,
 	IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		PrintWriter outputWriter = getOutputWriter(itemType);
+		PrintWriter outputWriter = getOutputWriter(results.getType());
 		
 		try{
 			TokenList outputTokens = new TokenList();
-			String tradeStatsHeader48Hrs = itemType.getTradeStatsHeader48Hrs().trim();
-			String tradeStatsHeader90Days = itemType.getTradeStatsHeader90Days().trim();
-			String headerSuffix = itemType.getHeaderSuffix().trim();
+			String tradeStatsHeader48Hrs = results.getTradeStatsHeader48Hrs().trim();
+			String tradeStatsHeader90Days = results.getTradeStatsHeader90Days().trim();
+			String headerSuffix = results.getDataHeader().trim();
 			
 			outputTokens.add(SHARED_OUTPUT_FILE_HEADER);
 			if(tradeStatsHeader48Hrs.length() > 0) outputTokens.add(tradeStatsHeader48Hrs);

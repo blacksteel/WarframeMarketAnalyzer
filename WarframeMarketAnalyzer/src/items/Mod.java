@@ -1,8 +1,23 @@
 package items;
 
-import static enums.comparable.MiscWarframeTerms.*;
-import static enums.comparable.UniqueNameSnippet.*;
-import static enums.jsonProps.WarframeStatusPropName.*;
+import static enums.comparable.MiscWarframeTerms.PARAZON;
+import static enums.comparable.MiscWarframeTerms.REQUIEM;
+import static enums.comparable.UniqueNameSnippet.CONCLAVE_MOD_UNIQUE_NAME_SNIPPET;
+import static enums.comparable.UniqueNameSnippet.REQUIEM_MOD_UNIQUE_NAME_SNIPPET;
+import static enums.jsonProps.WarframeStatusPropName.AUGMENT;
+import static enums.jsonProps.WarframeStatusPropName.COMPAT_NAME;
+import static enums.jsonProps.WarframeStatusPropName.MAX_RANK;
+import static enums.jsonProps.WarframeStatusPropName.MOD_SET;
+import static enums.jsonProps.WarframeStatusPropName.RARITY;
+import static enums.jsonProps.WarframeStatusPropName.SIMPLE_NAME;
+import static enums.jsonProps.WarframeStatusPropName.TYPE;
+import static enums.jsonProps.WarframeStatusPropName.UNIQUE_NAME;
+import static utils.JSONUtils.getBoolProp;
+import static utils.JSONUtils.getIntProp;
+import static utils.JSONUtils.getStrProp;
+import static utils.MiscUtils.trimAndCapitalizeCorrectly;
+
+import java.io.IOException;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -10,13 +25,7 @@ import com.google.gson.JsonObject;
 import dataSourceHandlers.WarframeMarketHandler;
 import utils.TokenList;
 
-import static utils.JSONUtils.*;
-import static utils.MiscUtils.trimAndCapitalizeCorrectly;
-
-import java.io.IOException;
-
-public class Mod extends StandardPricedWarframeItem{
-	private static final String DATA_HEADER_SUFFIX = "Rank,MaxRank,Type,Compatibility,Rarity,IsAugment,IsSet,IsConclaveOnly";
+public class Mod extends WarframeItem{
 
 	public final int rankToPriceCheck;
 	public final int maxRank;
@@ -101,10 +110,6 @@ public class Mod extends StandardPricedWarframeItem{
 		outputTokens.add(isConclaveOnly);
 
 		return outputTokens.toCSV();
-	}
-
-	public static String getHeaderSuffix(){
-		return DATA_HEADER_SUFFIX;
 	}
 
 	@Override

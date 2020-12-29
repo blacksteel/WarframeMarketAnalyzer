@@ -1,7 +1,9 @@
  package items;
 
+import static enums.comparable.MiscWarframeTerms.BLUEPRINT;
+import static enums.comparable.MiscWarframeTerms.KAVASA;
+import static enums.comparable.MiscWarframeTerms.SET;
 import static utils.MiscUtils.trimAndCapitalizeCorrectly;
-import static enums.comparable.MiscWarframeTerms.*;
 
 import java.io.IOException;
 
@@ -10,7 +12,6 @@ import tradeStats.StandardTradeStats;
 import utils.TokenList;
 
 public class PrimePart extends StandardPricedWarframeItem{
-	private static final String DATA_HEADER_SUFFIX = "ItemName,PartName,Type,IsVaulted,IsFullSet,NumInFullSet,Ducats,DucatsPerPlat(48HrsAvgPrice),DucatsPerPlat(90DaysAvgPrice)";
 
 	public final String itemName;
 	public final String partName;
@@ -55,10 +56,6 @@ public class PrimePart extends StandardPricedWarframeItem{
 		outputTokens.add((tradeStats90Days.numSales == 0) ? null : ducats/tradeStats90Days.avgPrice);
 		
 		return outputTokens.toCSV();
-	}
-
-	public static String getHeaderSuffix(){
-		return DATA_HEADER_SUFFIX;
 	}
 	
 	@Override

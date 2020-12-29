@@ -1,5 +1,8 @@
 package enums.fields;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum RelicFieldEnum implements IFieldEnum {
 	HrAvgInt48("48HrAvg(Int)"),
 	HrAvgEx48("48HrAvg(Ex)"),
@@ -146,5 +149,142 @@ public enum RelicFieldEnum implements IFieldEnum {
 	@Override
 	public String toString() {
 		return getDisplayName();
+	}
+	
+	public static List<RelicFieldEnum> get48HrFields() {
+		List<RelicFieldEnum> fields = new ArrayList<>();
+		fields.add(HrAvgInt48);
+		fields.add(HrAvgEx48);
+		fields.add(HrAvgFlaw48);
+		fields.add(HrAvgRad48);
+		fields.add(HrLowInt48);
+		fields.add(HrHighInt48);
+		fields.add(HrLowRad48);
+		fields.add(HrHighRad48);
+		fields.add(HrNumSalesInt48);
+		fields.add(HrNumSalesEx48);
+		fields.add(HrNumSalesFlaw48);
+		fields.add(HrNumSalesRad48);
+		return fields;
+	}
+	
+	public static List<RelicFieldEnum> get90DayFields() {
+		List<RelicFieldEnum> fields = new ArrayList<>();
+		fields.add(DayAvgInt90);
+		fields.add(DayAvgEx90);
+		fields.add(DayAvgFlaw90);
+		fields.add(DayAvgRad90);
+		fields.add(DayLowInt90);
+		fields.add(DayHighInt90);
+		fields.add(DayLowRad90);
+		fields.add(DayHighRad90);
+		fields.add(DayNumSalesInt90);
+		fields.add(DayNumSalesEx90);
+		fields.add(DayNumSalesFlaw90);
+		fields.add(DayNumSalesRad90);
+		return fields;
+	}
+	
+	public static List<RelicFieldEnum> getDataFields() {
+		List<RelicFieldEnum> fields = new ArrayList<>();
+		fields.add(CommonDrop1);
+		fields.add(CommonDrop2);
+		fields.add(CommonDrop3);
+		fields.add(UncommonDrop1);
+		fields.add(UncommonDrop2);
+		fields.add(RareDrop);
+		fields.add(CommonDrop1DucatVal);
+		fields.add(CommonDrop1AvgPlatVal48Hrs);
+		fields.add(CommonDrop1AvgPlatVal90Days);
+		fields.add(CommonDrop2DucatVal);
+		fields.add(CommonDrop2AvgPlatVal48Hrs);
+		fields.add(CommonDrop2AvgPlatVal90Days);
+		fields.add(CommonDrop3DucatVal);
+		fields.add(CommonDrop3AvgPlatVal48Hrs);
+		fields.add(CommonDrop3AvgPlatVal90Days);
+		fields.add(UncommonDrop1DucatVal);
+		fields.add(UncommonDrop1AvgPlatVal48Hrs);
+		fields.add(UncommonDrop1AvgPlatVal90Days);
+		fields.add(UncommonDrop2DucatVal);
+		fields.add(UncommonDrop2AvgPlatVal48Hrs);
+		fields.add(UncommonDrop2AvgPlatVal90Days);
+		fields.add(RareDropDucatVal);
+		fields.add(RareDropAvgPlatVal48Hrs);
+		fields.add(RareDropAvgPlatVal90Days);
+		fields.add(CommonDrop1ItemName);
+		fields.add(CommonDrop1PartName);
+		fields.add(CommonDrop2ItemName);
+		fields.add(CommonDrop2PartName);
+		fields.add(CommonDrop3ItemName);
+		fields.add(CommonDrop3PartName);
+		fields.add(UncommonDrop1ItemName);
+		fields.add(UncommonDrop1PartName);
+		fields.add(UncommonDrop2ItemName);
+		fields.add(UncommonDrop2PartName);
+		fields.add(RareDropItemName);
+		fields.add(RareDropPartName);
+		fields.add(DropsForma);
+		fields.add(DropsFormaCommon);
+		fields.add(DropsFormaUncommon);
+		fields.add(IsVaulted);
+		fields.add(IsBaroExclusive);
+		fields.add(AvgDucatValInt);
+		fields.add(AvgDucatValEx);
+		fields.add(AvgDucatValFlaw);
+		fields.add(AvgDucatValRad);
+		fields.add(AvgPlatVal48HrsInt);
+		fields.add(AvgPlatVal48HrsEx);
+		fields.add(AvgPlatVal48HrsFlaw);
+		fields.add(AvgPlatVal48HrsRad);
+		fields.add(AvgPlatVal90DaysInt);
+		fields.add(AvgPlatVal90DaysEx);
+		fields.add(AvgPlatVal90DaysFlaw);
+		fields.add(AvgPlatVal90DaysRad);
+		fields.add(BestAvgDucatRefinement);
+		fields.add(BestAvgPlatRefinement48Hrs);
+		fields.add(BestAvgPlatRefinement90Days);
+		fields.add(AvgDucatValChangeIntEx);
+		fields.add(AvgDucatValChangeIntFlaw);
+		fields.add(AvgDucatValChangeIntRad);
+		fields.add(AvgDucatValChangeExFlaw);
+		fields.add(AvgDucatValChangeExRad);
+		fields.add(AvgDucatValChangeFlawRad);
+		fields.add(AvgPlatVal48HrsChangeIntEx);
+		fields.add(AvgPlatVal48HrsChangeIntFlaw);
+		fields.add(AvgPlatVal48HrsChangeIntRad);
+		fields.add(AvgPlatVal48HrsChangeExFlaw);
+		fields.add(AvgPlatVal48HrsChangeExRad);
+		fields.add(AvgPlatVal48HrsChangeFlawRad);
+		fields.add(AvgPlatVal90DaysChangeIntEx);
+		fields.add(AvgPlatVal90DaysChangeIntFlaw);
+		fields.add(AvgPlatVal90DaysChangeIntRad);
+		fields.add(AvgPlatVal90DaysChangeExFlaw);
+		fields.add(AvgPlatVal90DaysChangeExRad);
+		fields.add(AvgPlatVal90DaysChangeFlawRad);
+		fields.add(AvgDucatValChangePerTraceIntEx);
+		fields.add(AvgDucatValChangePerTraceIntFlaw);
+		fields.add(AvgDucatValChangePerTraceIntRad);
+		fields.add(AvgDucatValChangePerTraceExFlaw);
+		fields.add(AvgDucatValChangePerTraceExRad);
+		fields.add(AvgDucatValChangePerTraceFlawRad);
+		fields.add(AvgPlatVal48HrsChangePerTraceIntEx);
+		fields.add(AvgPlatVal48HrsChangePerTraceIntFlaw);
+		fields.add(AvgPlatVal48HrsChangePerTraceIntRad);
+		fields.add(AvgPlatVal48HrsChangePerTraceExFlaw);
+		fields.add(AvgPlatVal48HrsChangePerTraceExRad);
+		fields.add(AvgPlatVal48HrsChangePerTraceFlawRad);
+		fields.add(AvgPlatVal90DaysChangePerTraceIntEx);
+		fields.add(AvgPlatVal90DaysChangePerTraceIntFlaw);
+		fields.add(AvgPlatVal90DaysChangePerTraceIntRad);
+		fields.add(AvgPlatVal90DaysChangePerTraceExFlaw);
+		fields.add(AvgPlatVal90DaysChangePerTraceExRad);
+		fields.add(AvgPlatVal90DaysChangePerTraceFlawRad);
+		fields.add(IntShareAvgDucatVal);
+		fields.add(IntShareAvgPlatVal48Hrs);
+		fields.add(IntShareAvgPlatVal90Days);
+		fields.add(RadShareAvgDucatVal);
+		fields.add(RadShareAvgPlatValue48Hrs);
+		fields.add(RadShareAvgPlatValue90Days);
+		return fields;
 	}
 }

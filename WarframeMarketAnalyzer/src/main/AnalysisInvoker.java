@@ -13,10 +13,14 @@ import dataSourceHandlers.WarframeMarketHandler;
 import dataSourceHandlers.WarframeStatusHandler;
 import dataSourceHandlers.WarframeWikiHandler;
 import enums.ItemType;
+import enums.fields.ModFieldEnum;
+import enums.fields.PrimeFieldEnum;
+import enums.fields.RelicFieldEnum;
 import gui.IOptionProvider;
 import items.Mod;
 import items.PrimePart;
 import items.VoidRelic;
+import main.results.AnalysisResults;
 
 public class AnalysisInvoker {
 	private long launchTime;
@@ -79,21 +83,23 @@ public class AnalysisInvoker {
 		WarframeWikiHandler wikiHandler = new WarframeWikiHandler();
 		OutputFileWriter outputWriter = new OutputFileWriter(launchTime);
 
+		AnalysisResults results = new AnalysisResults(optionProvider);
+		
 		if(optionProvider.processMods()){
 			List<Mod> tradableModsList = statusHandler.handleMods();
 			marketHandler.processItems(tradableModsList);
-			outputWriter.writeOutput(tradableModsList, ItemType.MOD);
+			outputWriter.<ModFieldEnum>writeOutput(tradableModsList, results.getTypeResults(ItemType.MOD));
 		}
 
 		if(optionProvider.processPrimes()){
 			List<PrimePart> primePartsList = statusHandler.handlePrimes();
 			marketHandler.processItems(primePartsList);
-			outputWriter.writeOutput(primePartsList, ItemType.PRIME_PART);
+			outputWriter.<PrimeFieldEnum>writeOutput(primePartsList, results.getTypeResults(ItemType.PRIME_PART));
 
 			if(optionProvider.processRelics()) {
 				List<VoidRelic> relicsList = wikiHandler.handleVoidRelics(primePartsList);
 				marketHandler.processItems(relicsList);
-				outputWriter.writeOutput(relicsList, ItemType.VOID_RELIC);
+				outputWriter.<RelicFieldEnum>writeOutput(relicsList, results.getTypeResults(ItemType.VOID_RELIC));
 			}
 		}
 	}

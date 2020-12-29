@@ -1,10 +1,28 @@
 package items;
 
-import static enums.jsonProps.WarframeWikiPropName.*;
-import static enums.comparable.MiscWarframeTerms.*;
-import static enums.VoidRelicRefinement.*;
-import static utils.JSONUtils.*;
-import static utils.MiscUtils.*;
+import static enums.VoidRelicRefinement.EXCEPTIONAL;
+import static enums.VoidRelicRefinement.FLAWLESS;
+import static enums.VoidRelicRefinement.INTACT;
+import static enums.VoidRelicRefinement.RADIANT;
+import static enums.comparable.MiscWarframeTerms.BLUEPRINT;
+import static enums.comparable.MiscWarframeTerms.COLLAR;
+import static enums.comparable.MiscWarframeTerms.FORMA;
+import static enums.comparable.MiscWarframeTerms.KAVASA;
+import static enums.jsonProps.WarframeWikiPropName.DROPPED_ITEM_NAME;
+import static enums.jsonProps.WarframeWikiPropName.DROPPED_ITEM_PART;
+import static enums.jsonProps.WarframeWikiPropName.DROPPED_ITEM_RARITY;
+import static enums.jsonProps.WarframeWikiPropName.IS_BARO_EXCLUSIVE;
+import static enums.jsonProps.WarframeWikiPropName.IS_VAULTED;
+import static enums.jsonProps.WarframeWikiPropName.RELIC_DROPS;
+import static enums.jsonProps.WarframeWikiPropName.RELIC_ERA;
+import static enums.jsonProps.WarframeWikiPropName.RELIC_NAME;
+import static utils.JSONUtils.getIntProp;
+import static utils.JSONUtils.getJsonArray;
+import static utils.JSONUtils.getStrProp;
+import static utils.MiscUtils.divideWithNullCheck;
+import static utils.MiscUtils.isMissingData;
+import static utils.MiscUtils.subtractWithNullCheck;
+import static utils.MiscUtils.trimAndCapitalizeCorrectly;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,45 +43,6 @@ import tradeStats.VoidRelicTradeStats;
 import utils.TokenList;
 
 public class VoidRelic extends WarframeItem{
-	private static final String TRADE_STATS_HEADER_48_HRS =
-			"48HrAvg(Int),48HrAvg(Ex),48HrAvg(Flaw),48HrAvg(Rad),"
-			+ "48HrLow(Int),48HrHigh(Int),48HrLow(Rad),48HrHigh(Rad),"
-			+ "48HrNumSales(Int),48HrNumSales(Ex),48HrNumSales(Flaw),48HrNumSales(Rad)";
-	
-	private static final String TRADE_STATS_HEADER_90_DAYS =
-			"90DayAvg(Int),90DayAvg(Ex),90DayAvg(Flaw),90DayAvg(Rad),"
-			+ "90DayLow(Int),90DayHigh(Int),90DayLow(Rad),90DayHigh(Rad),"
-			+ "90DayNumSales(Int),90DayNumSales(Ex),90DayNumSales(Flaw),90DayNumSales(Rad)";
-	
-	private static final String DATA_HEADER_SUFFIX =
-			"CommonDrop1,CommonDrop2,CommonDrop3,UncommonDrop1,UncommonDrop2,RareDrop,"
-			+ "CommonDrop1DucatVal,CommonDrop1AvgPlatVal48Hrs,CommonDrop1AvgPlatVal90Days,"
-			+ "CommonDrop2DucatVal,CommonDrop2AvgPlatVal48Hrs,CommonDrop2AvgPlatVal90Days,"
-			+ "CommonDrop3DucatVal,CommonDrop3AvgPlatVal48Hrs,CommonDrop3AvgPlatVal90Days,"
-			+ "UncommonDrop1DucatVal,UncommonDrop1AvgPlatVal48Hrs,UncommonDrop1AvgPlatVal90Days,"
-			+ "UncommonDrop2DucatVal,UncommonDrop2AvgPlatVal48Hrs,UncommonDrop2AvgPlatVal90Days,"
-			+ "RareDropDucatVal,RareDropAvgPlatVal48Hrs,RareDropAvgPlatVal90Days,"
-			+ "CommonDrop1ItemName,CommonDrop1PartName,CommonDrop2ItemName,CommonDrop2PartName,"
-			+ "CommonDrop3ItemName,CommonDrop3PartName,UncommonDrop1ItemName,UncommonDrop1PartName,"
-			+ "UncommonDrop2ItemName,UncommonDrop2PartName,RareDropItemName,RareDropPartName,"
-			+ "DropsForma,DropsFormaCommon,DropsFormaUncommon,IsVaulted,IsBaroExclusive,"
-			+ "AvgDucatVal(Int), AvgDucatVal(Ex), AvgDucatVal(Flaw), AvgDucatVal(Rad),"
-			+ "AvgPlatVal48Hrs(Int), AvgPlatVal48Hrs(Ex), AvgPlatVal48Hrs(Flaw), AvgPlatVal48Hrs(Rad),"
-			+ "AvgPlatVal90Days(Int), AvgPlatVal90Days(Ex), AvgPlatVal90Days(Flaw), AvgPlatVal90Days(Rad),"
-			+ "BestAvgDucatRefinement,BestAvgPlatRefinement48Hrs,BestAvgPlatRefinement90Days,"
-			+ "AvgDucatValChange(Int=>Ex), AvgDucatValChange(Int=>Flaw), AvgDucatValChange(Int=>Rad),"
-			+ "AvgDucatValChange(Ex=>Flaw), AvgDucatValChange(Ex=>Rad), AvgDucatValChange(Flaw=>Rad),"
-			+ "AvgPlatVal48HrsChange(Int=>Ex), AvgPlatVal48HrsChange(Int=>Flaw), AvgPlatVal48HrsChange(Int=>Rad),"
-			+ "AvgPlatVal48HrsChange(Ex=>Flaw), AvgPlatVal48HrsChange(Ex=>Rad), AvgPlatVal48HrsChange(Flaw=>Rad),"
-			+ "AvgPlatVal90DaysChange(Int=>Ex), AvgPlatVal90DaysChange(Int=>Flaw), AvgPlatVal90DaysChange(Int=>Rad),"
-			+ "AvgPlatVal90DaysChange(Ex=>Flaw), AvgPlatVal90DaysChange(Ex=>Rad), AvgPlatVal90DaysChange(Flaw=>Rad),"
-			+ "AvgDucatValChangePerTrace(Int=>Ex), AvgDucatValChangePerTrace(Int=>Flaw), AvgDucatValChangePerTrace(Int=>Rad),"
-			+ "AvgDucatValChangePerTrace(Ex=>Flaw), AvgDucatValChangePerTrace(Ex=>Rad), AvgDucatValChangePerTrace(Flaw=>Rad),"
-			+ "AvgPlatVal48HrsChangePerTrace(Int=>Ex), AvgPlatVal48HrsChangePerTrace(Int=>Flaw), AvgPlatVal48HrsChangePerTrace(Int=>Rad),"
-			+ "AvgPlatVal48HrsChangePerTrace(Ex=>Flaw), AvgPlatVal48HrsChangePerTrace(Ex=>Rad), AvgPlatVal48HrsChangePerTrace(Flaw=>Rad),"
-			+ "AvgPlatVal90DaysChangePerTrace(Int=>Ex), AvgPlatVal90DaysChangePerTrace(Int=>Flaw), AvgPlatVal90DaysChangePerTrace(Int=>Rad),"
-			+ "AvgPlatVal90DaysChangePerTrace(Ex=>Flaw), AvgPlatVal90DaysChangePerTrace(Ex=>Rad), AvgPlatVal90DaysChangePerTrace(Flaw=>Rad),"
-			+ "IntShareAvgDucatVal,IntShareAvgPlatVal48Hrs,IntShareAvgPlatVal90Days,RadShareAvgDucatVal,RadShareAvgPlatValue48Hrs,RadShareAvgPlatValue90Days";
 
 	public final VoidRelicEra relicEra;
 	public final String relicName;
@@ -526,18 +505,6 @@ public class VoidRelic extends WarframeItem{
 		String name = getStrProp(jsonObject, RELIC_NAME);
 
 		return era + " " + name;
-	}
-
-	public static String getHeaderSuffix(){
-		return DATA_HEADER_SUFFIX;
-	}
-
-	public static String getTradeStatsHeader48Hrs(){
-		return TRADE_STATS_HEADER_48_HRS;
-	}
-
-	public static String getTradeStatsHeader90Days(){
-		return TRADE_STATS_HEADER_90_DAYS;
 	}
 
 	@Override
