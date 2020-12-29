@@ -21,6 +21,7 @@ import items.Mod;
 import items.PrimePart;
 import items.VoidRelic;
 import main.results.AnalysisResults;
+import main.results.TypeResults;
 
 public class AnalysisInvoker {
 	private long launchTime;
@@ -86,20 +87,23 @@ public class AnalysisInvoker {
 		AnalysisResults results = new AnalysisResults(optionProvider);
 		
 		if(optionProvider.processMods()){
-			List<Mod> tradableModsList = statusHandler.handleMods();
+			TypeResults<ModFieldEnum> modTypeResults = results.getTypeResults(ItemType.MOD);
+			List<Mod> tradableModsList = statusHandler.handleMods(modTypeResults);
 			marketHandler.processItems(tradableModsList);
-			outputWriter.<ModFieldEnum>writeOutput(tradableModsList, results.getTypeResults(ItemType.MOD));
+			outputWriter.writeOutput(modTypeResults);
 		}
 
 		if(optionProvider.processPrimes()){
-			List<PrimePart> primePartsList = statusHandler.handlePrimes();
+			TypeResults<PrimeFieldEnum> primeTypeResults = results.getTypeResults(ItemType.PRIME_PART);
+			List<PrimePart> primePartsList = statusHandler.handlePrimes(primeTypeResults);
 			marketHandler.processItems(primePartsList);
-			outputWriter.<PrimeFieldEnum>writeOutput(primePartsList, results.getTypeResults(ItemType.PRIME_PART));
+			outputWriter.writeOutput(primeTypeResults);
 
 			if(optionProvider.processRelics()) {
-				List<VoidRelic> relicsList = wikiHandler.handleVoidRelics(primePartsList);
+				TypeResults<RelicFieldEnum> relicTypeResults = results.getTypeResults(ItemType.VOID_RELIC);
+				List<VoidRelic> relicsList = wikiHandler.handleVoidRelics(primePartsList, relicTypeResults);
 				marketHandler.processItems(relicsList);
-				outputWriter.<RelicFieldEnum>writeOutput(relicsList, results.getTypeResults(ItemType.VOID_RELIC));
+				outputWriter.writeOutput(relicTypeResults);
 			}
 		}
 	}

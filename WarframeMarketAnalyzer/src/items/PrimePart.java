@@ -8,58 +8,74 @@ import static utils.MiscUtils.trimAndCapitalizeCorrectly;
 import java.io.IOException;
 
 import dataSourceHandlers.WarframeMarketHandler;
-import tradeStats.StandardTradeStats;
-import utils.TokenList;
+import dataSourceHandlers.WarframeMarketHandler.TradeStatsPair;
+import enums.fields.PrimeFieldEnum;
+import main.results.TypeResults;
 
-public class PrimePart extends StandardPricedWarframeItem{
+public class PrimePart extends WarframeItem<PrimeFieldEnum>{
 
-	public final String itemName;
-	public final String partName;
-	public final String type;
-	public final boolean isVaulted;
-	public final boolean isFullSet;
-	public final Integer numInFullSet;
-	public final Integer ducats;
+	private Integer ducats;
+	private TradeStatsPair tradeStats;
 
-	public PrimePart(String itemName, String partName, String type, boolean isVaulted, boolean isFullSet, Integer numInFullSet, Integer ducats){
-		super((KAVASA.containsValue(itemName) ?
-				(!(partName.contains(SET.value) || partName.contains(BLUEPRINT.value)) ?
-						"Kavasa Prime" :
-						itemName) :
-				itemName)
-				+ " " + partName);
+	public PrimePart(String itemName, String partName, String type, boolean isVaulted, boolean isFullSet,
+			Integer numInFullSet, Integer ducats, TypeResults<PrimeFieldEnum> results) {
+		super(results);
 
-		this.itemName = trimAndCapitalizeCorrectly(itemName);
-		this.partName = trimAndCapitalizeCorrectly(partName);
-		this.type = trimAndCapitalizeCorrectly(type);
-		this.isVaulted = isVaulted;
-		this.isFullSet = isFullSet;
-		this.numInFullSet = numInFullSet;
+		String baseItemName;
+		if (KAVASA.containsValue(itemName) && !(partName.contains(SET.value) || partName.contains(BLUEPRINT.value))) {
+			baseItemName = "Kavasa Prime";
+		} else {
+			baseItemName = itemName;
+		}
+		setResult(PrimeFieldEnum.Name, baseItemName+ " " + partName);
+
+		setResult(PrimeFieldEnum.ItemName, trimAndCapitalizeCorrectly(itemName));
+		setResult(PrimeFieldEnum.PartName,trimAndCapitalizeCorrectly(partName));
+		setResult(PrimeFieldEnum.Type, trimAndCapitalizeCorrectly(type));
+		setResult(PrimeFieldEnum.IsVaulted, isVaulted);
+		setResult(PrimeFieldEnum.IsFullSet, isFullSet);
+		setResult(PrimeFieldEnum.NumInFullSet, numInFullSet);
 		this.ducats = ducats;
+		setResult(PrimeFieldEnum.Ducats, ducats);
 	}
 
 	@Override
-	public String getDataSuffix(){
-		TokenList outputTokens = new TokenList();
-		
-		StandardTradeStats tradeStats48Hrs = getTradeStats48Hrs();
-		StandardTradeStats tradeStats90Days = getTradeStats90Days();
-		
-		outputTokens.add(itemName);
-		outputTokens.add(partName);
-		outputTokens.add(type);
-		outputTokens.add(isVaulted);
-		outputTokens.add(isFullSet);
-		outputTokens.add((numInFullSet == null) ? null : numInFullSet);
-		outputTokens.add(ducats);
-		outputTokens.add((tradeStats48Hrs.numSales == 0) ? null : ducats/tradeStats48Hrs.avgPrice);
-		outputTokens.add((tradeStats90Days.numSales == 0) ? null : ducats/tradeStats90Days.avgPrice);
-		
-		return outputTokens.toCSV();
+	public void populateTradeStats(WarframeMarketHandler marketHandler) throws IOException, InterruptedException {
+		tradeStats = marketHandler.getAndProcessTradeData(getName(), isRanked(), getRankToPriceCheck());
+
+		setResult(PrimeFieldEnum.Num48Hr, tradeStats.stats48Hrs.numSales);
+		if (tradeStats.stats48Hrs.numSales > 0) {
+			setResult(PrimeFieldEnum.Avg48Hr, tradeStats.stats48Hrs.avgPrice);
+			setResult(PrimeFieldEnum.High48Hr, tradeStats.stats48Hrs.maxPrice);
+			setResult(PrimeFieldEnum.Low48Hr, tradeStats.stats48Hrs.minPrice);
+		} else {
+			setResult(PrimeFieldEnum.Avg48Hr, NA);
+			setResult(PrimeFieldEnum.High48Hr, NA);
+			setResult(PrimeFieldEnum.Low48Hr, NA);
+		}
+
+		setResult(PrimeFieldEnum.Num90Day, tradeStats.stats90Days.numSales);
+		if (tradeStats.stats90Days.numSales > 0) {
+			setResult(PrimeFieldEnum.Avg90Day, tradeStats.stats90Days.avgPrice);
+			setResult(PrimeFieldEnum.High90Day, tradeStats.stats90Days.maxPrice);
+			setResult(PrimeFieldEnum.Low90Day, tradeStats.stats90Days.minPrice);
+		} else {
+			setResult(PrimeFieldEnum.Avg90Day, NA);
+			setResult(PrimeFieldEnum.High90Day, NA);
+			setResult(PrimeFieldEnum.Low90Day, NA);
+		}
+
+		setResult(PrimeFieldEnum.Ducats48, (tradeStats.stats48Hrs.numSales == 0) ? NA :
+			ducats.doubleValue()/tradeStats.stats48Hrs.avgPrice);
+		setResult(PrimeFieldEnum.Ducats90, (tradeStats.stats90Days.numSales == 0) ? NA :
+			ducats.doubleValue()/tradeStats.stats90Days.avgPrice);
 	}
-	
-	@Override
-	public void populateTradeStats(WarframeMarketHandler marketHandler) throws IOException, InterruptedException{
-		marketHandler.processItemStandard(this);
+
+	public TradeStatsPair getTradeStats() {
+		return tradeStats;
+	}
+
+	public Integer getDucats() {
+		return ducats;
 	}
 }

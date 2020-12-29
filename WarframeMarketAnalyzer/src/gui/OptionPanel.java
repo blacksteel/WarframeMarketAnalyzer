@@ -20,19 +20,19 @@ import main.Config;
 public class OptionPanel extends JPanel implements IOptionProvider {
 
 	private static final int GRID_WIDTH=5;
-	
+
 	private JCheckBox processMods;
 	private JCheckBox processRelics;
 	private JCheckBox processPrimes;
-	// TODO Add sub checkboxes for things like conclave, vaulted, sets
-	
+	// TODO Add sub checkboxes for things like conclave, vaulted, sets, relic drop values
+
 	private JCheckBox enableAdvanced;
 	private FieldSelector<ModFieldEnum> modSelector;
 	private FieldSelector<PrimeFieldEnum> primeSelector;
 	private FieldSelector<RelicFieldEnum> relicSelector;
 
 	private JButton runButton;
-	
+
 	public OptionPanel(MainPanel main) {
 
 		setLayout(new GridBagLayout());
@@ -45,7 +45,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		y = addSeperator(c, y);
 		y = addInvoke(main, c, y);
 	}
-	
+
 	public int addSeperator(GridBagConstraints c, int y) {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.gridx = 0;
@@ -53,7 +53,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		c.gridwidth = GRID_WIDTH;
 		c.ipady = 5;
 		add(new JSeparator(), c);
-		
+
 		// Next Row
 		y++;
 
@@ -64,10 +64,10 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		c.fill = GridBagConstraints.NONE;
 		c.ipady = 0;
 		c.gridwidth = 1;
-		
+
 		processMods = new JCheckBox("Process Mods:", Config.PROCESS_MODS);
 		processMods.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				syncFieldSelectorsEnabled();
@@ -79,7 +79,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 
 		processPrimes = new JCheckBox("Process Primes:", Config.PROCESS_PRIMES);
 		processPrimes.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// If the primes checkbox was just de-selected, make sure that the relics checkbox is also de-selected
@@ -92,10 +92,10 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		c.gridx = 2;
 		c.gridy = y;
 		add(processPrimes, c);
-		
+
 		processRelics = new JCheckBox("Process Relics (Requires Primes):", Config.PROCESS_RELICS);
 		processRelics.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// If the relics checkbox was just selected, make sure that the primes checkbox is also enabled
@@ -114,7 +114,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 
 		return y;
 	}
-	
+
 	private void syncFieldSelectorsEnabled() {
 		modSelector.setEnabled(processMods.isSelected());
 		primeSelector.setEnabled(processPrimes.isSelected());
@@ -127,7 +127,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		c.ipady = 0;
 		c.gridwidth = 1;
 		c.ipadx = 10;
-		
+
 		modSelector = new FieldSelector<>(ModFieldEnum.class);
 		modSelector.setVisible(false);
 		c.gridx = 0;
@@ -137,7 +137,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		c.gridx = 1;
 		c.gridy = y;
 		add(new JSeparator(SwingConstants.VERTICAL),c);
-		
+
 		primeSelector = new FieldSelector<>(PrimeFieldEnum.class);
 		primeSelector.setVisible(false);
 		c.gridx = 2;
@@ -147,7 +147,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		c.gridx = 3;
 		c.gridy = y;
 		add(new JSeparator(SwingConstants.VERTICAL),c);
-		
+
 		relicSelector = new FieldSelector<>(RelicFieldEnum.class);
 		relicSelector.setVisible(false);
 		c.gridx = 4;
@@ -156,7 +156,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 
 		// Next Row
 		y++;
-		
+
 		enableAdvanced = new JCheckBox("Advanced");
 		enableAdvanced.addActionListener(new ActionListener() {
 			@Override
@@ -182,7 +182,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 	public int addInvoke(MainPanel main, GridBagConstraints c, int y) {
 		runButton = new JButton("Run Me!");
 		runButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				main.invokeAnalysis();
@@ -197,7 +197,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 
 		// TODO
 		// importButton = new JButton("Import Settings");
-		
+
 		return y+1;
 	}
 
@@ -215,7 +215,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 	public boolean processRelics() {
 		return processRelics.isSelected();
 	}
-	
+
 	@Override
 	public List<RelicFieldEnum> getRelicFields() {
 		return relicSelector.getFields();
@@ -225,7 +225,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 	public boolean processPrimes() {
 		return processPrimes.isSelected();
 	}
-	
+
 	@Override
 	public List<PrimeFieldEnum> getPrimeFields() {
 		return primeSelector.getFields();

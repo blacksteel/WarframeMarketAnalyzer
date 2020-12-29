@@ -54,7 +54,6 @@ public class AnalysisResults {
 			return modResults;
 		} else if (field instanceof PrimeFieldEnum) {
 			return primeResults;
-			
 		} else if (field instanceof RelicFieldEnum) {
 			return relicResults;
 		} else {
@@ -62,16 +61,16 @@ public class AnalysisResults {
 		}
 	}
 	
-	public boolean hasField(ItemType type, String fieldName) {
-		TypeResults<? extends Enum<?>> typeResult = getTypeResults(type);
-		boolean hasField;
-		if (typeResult != null) {
-			hasField = typeResult.hasField(fieldName);
-		} else {
-			hasField = false;
-		}
-		return hasField;
-	}
+//	public boolean hasField(ItemType type, String fieldName) {
+//		TypeResults<? extends Enum<?>> typeResult = getTypeResults(type);
+//		boolean hasField;
+//		if (typeResult != null) {
+//			hasField = typeResult.hasField(fieldName);
+//		} else {
+//			hasField = false;
+//		}
+//		return hasField;
+//	}
 	
 	public int startNewResultRow(ItemType type) {
 		TypeResults<? extends Enum<?>> typeResult = getTypeResults(type);
@@ -88,7 +87,7 @@ public class AnalysisResults {
 	public <T extends Enum<T> & IFieldEnum> void addResult(String value, int index, T field) {
 		TypeResults<T> typeResults = (TypeResults<T>)getTypeResults(field);
 		if (typeResults != null) {
-			typeResults.addResult(value, index, field);
+			typeResults.setResult(value, index, field);
 		}
 	}
 

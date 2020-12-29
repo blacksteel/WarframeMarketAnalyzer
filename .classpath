@@ -7,5 +7,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="Dependencies/gson-2.8.6.jar"/>
-	<classpathentry kind="output" path="WarframeMarketTools/bin"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -19,7 +19,7 @@ public class StandardTradeStats extends TradeStats{
 	@Override
 	public String toOutputString(){
 		TokenList outputTokens = new TokenList();
-		
+
 		if(numSales > 0){
 			outputTokens.add(avgPrice);
 			outputTokens.add(minPrice);
@@ -30,9 +30,9 @@ public class StandardTradeStats extends TradeStats{
 			outputTokens.addNull();
 			outputTokens.addNull();
 		}
-		
+
 		outputTokens.add(numSales);
-		
+
 		return outputTokens.toCSV();
 	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum ModFieldEnum implements IFieldEnum {
+	Name,
 	Avg48Hr("48HrAvg"),
 	Low48Hr("48HrLow"),
 	High48Hr("48HrHigh"),

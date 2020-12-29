@@ -4,30 +4,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum RelicFieldEnum implements IFieldEnum {
+	Name,
 	HrAvgInt48("48HrAvg(Int)"),
 	HrAvgEx48("48HrAvg(Ex)"),
 	HrAvgFlaw48("48HrAvg(Flaw)"),
 	HrAvgRad48("48HrAvg(Rad)"),
+	
 	HrLowInt48("48HrLow(Int)"),
-	HrHighInt48("48HrHigh(Int)"),
+	HrLowEx48("48HrLow(Ex)"),
+	HrLowFlaw48("48HrLow(Flaw)"),
 	HrLowRad48("48HrLow(Rad)"),
+	
+	HrHighInt48("48HrHigh(Int)"),
+	HrHighEx48("48HrHigh(Ex)"),
+	HrHighFlaw48("48HrHigh(Flaw)"),
 	HrHighRad48("48HrHigh(Rad)"),
+	
 	HrNumSalesInt48("48HrNumSales(Int)"),
 	HrNumSalesEx48("48HrNumSales(Ex)"),
 	HrNumSalesFlaw48("48HrNumSales(Flaw)"),
 	HrNumSalesRad48("48HrNumSales(Rad)"),
+	
 	DayAvgInt90("90DayAvg(Int)"),
 	DayAvgEx90("90DayAvg(Ex)"),
 	DayAvgFlaw90("90DayAvg(Flaw)"),
 	DayAvgRad90("90DayAvg(Rad)"),
+	
 	DayLowInt90("90DayLow(Int)"),
-	DayHighInt90("90DayHigh(Int)"),
+	DayLowEx90("90DayLow(Ex)"),
+	DayLowFlaw90("90DayLow(Flaw)"),
 	DayLowRad90("90DayLow(Rad)"),
+	
+	DayHighInt90("90DayHigh(Int)"),
+	DayHighEx90("90DayHigh(Ex)"),
+	DayHighFlaw90("90DayHigh(Flaw)"),
 	DayHighRad90("90DayHigh(Rad)"),
+	
 	DayNumSalesInt90("90DayNumSales(Int)"),
 	DayNumSalesEx90("90DayNumSales(Ex)"),
 	DayNumSalesFlaw90("90DayNumSales(Flaw)"),
 	DayNumSalesRad90("90DayNumSales(Rad)"),
+	
 	CommonDrop1("CommonDrop1"),
 	CommonDrop2("CommonDrop2"),
 	CommonDrop3("CommonDrop3"),
