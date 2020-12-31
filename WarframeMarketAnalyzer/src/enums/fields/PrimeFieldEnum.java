@@ -1,8 +1,5 @@
 package enums.fields;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public enum PrimeFieldEnum implements IFieldEnum {
 	Name,
 	Avg48Hr("48HrAvg"),
@@ -25,15 +22,21 @@ public enum PrimeFieldEnum implements IFieldEnum {
 	;
 
 	private String defaultDisplayName;
-	
+	private final boolean includedByDefault;
+
 	private PrimeFieldEnum() {
 		this(null);
 	}
 
 	private PrimeFieldEnum(String defaultDisplayName) {
-		this.defaultDisplayName = defaultDisplayName;
+		this(defaultDisplayName, true);
 	}
-	
+
+	private PrimeFieldEnum(String defaultDisplayName, boolean includedByDefault) {
+		this.defaultDisplayName = defaultDisplayName;
+		this.includedByDefault = includedByDefault;
+	}
+
 	@Override
 	public String getDisplayName() {
 		if (defaultDisplayName != null) {
@@ -41,41 +44,46 @@ public enum PrimeFieldEnum implements IFieldEnum {
 		}
 		return name();
 	}
-	
+
+	@Override
+	public boolean isIncudedByDefault() {
+		return includedByDefault;
+	}
+
 	@Override
 	public String toString() {
 		return getDisplayName();
 	}
-	
-	public static List<PrimeFieldEnum> get48HrFields() {
-		List<PrimeFieldEnum> fields = new ArrayList<>();
-		fields.add(Avg48Hr);
-		fields.add(Low48Hr);
-		fields.add(High48Hr);
-		fields.add(Num48Hr);
-		return fields;
-	}
-	
-	public static List<PrimeFieldEnum> get90DayFields() {
-		List<PrimeFieldEnum> fields = new ArrayList<>();
-		fields.add(Avg90Day);
-		fields.add(Low90Day);
-		fields.add(High90Day);
-		fields.add(Num90Day);
-		return fields;
-	}
-	
-	public static List<PrimeFieldEnum> getDataFields() {
-		List<PrimeFieldEnum> fields = new ArrayList<>();
-		fields.add(ItemName);
-		fields.add(PartName);
-		fields.add(Type);
-		fields.add(IsVaulted);
-		fields.add(IsFullSet);
-		fields.add(NumInFullSet);
-		fields.add(Ducats);
-		fields.add(Ducats48);
-		fields.add(Ducats90);
-		return fields;
-	}
+
+//	public static List<PrimeFieldEnum> get48HrFields() {
+//		List<PrimeFieldEnum> fields = new ArrayList<>();
+//		fields.add(Avg48Hr);
+//		fields.add(Low48Hr);
+//		fields.add(High48Hr);
+//		fields.add(Num48Hr);
+//		return fields;
+//	}
+//
+//	public static List<PrimeFieldEnum> get90DayFields() {
+//		List<PrimeFieldEnum> fields = new ArrayList<>();
+//		fields.add(Avg90Day);
+//		fields.add(Low90Day);
+//		fields.add(High90Day);
+//		fields.add(Num90Day);
+//		return fields;
+//	}
+//
+//	public static List<PrimeFieldEnum> getDataFields() {
+//		List<PrimeFieldEnum> fields = new ArrayList<>();
+//		fields.add(ItemName);
+//		fields.add(PartName);
+//		fields.add(Type);
+//		fields.add(IsVaulted);
+//		fields.add(IsFullSet);
+//		fields.add(NumInFullSet);
+//		fields.add(Ducats);
+//		fields.add(Ducats48);
+//		fields.add(Ducats90);
+//		return fields;
+//	}
 }

@@ -33,19 +33,19 @@ public class MainPanel extends JFrame implements IPackListener{
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(dim.width/2 - getSize().width/2, dim.height/2 - getSize().height/2);
 	}
-	
+
 	public void invokeAnalysis() {
 
 		contentPanel.removeAll();
 		contentPanel.add(new ProgressPanel());
 
-		contentPanel.revalidate();
-		contentPanel.repaint();
-		
+		pack();
+		setLocationRelativeTo(null);
+
 		// TODO Clean this up
 		new AnalysisInvoker().invokeAnalysis(optionPanel);
 	}
-	
+
 	@Override
 	public void resize() {
 		pack();

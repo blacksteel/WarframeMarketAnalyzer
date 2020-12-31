@@ -21,25 +21,23 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 	private Class<T> enumClass;
 	private JList<T> fieldList;
 	private DefaultListModel<T> fieldModel;
-	
-	public FieldList(String label, Class<T> enumClass, EnumSet<T> initial) {
+
+	public FieldList(String label, Class<T> enumClass, List<T> initial) {
 		this.enumClass = enumClass;
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		add(new JLabel(label));
 
 		fieldModel = new DefaultListModel<>();
-		for (T field : enumClass.getEnumConstants()) {
-			if (initial.contains(field)) {
-				fieldModel.addElement(field);
-			}
+		for (T field : initial) {
+			fieldModel.addElement(field);
 		}
 		fieldList = new JList<>(fieldModel);
-		
+
 		JScrollPane scroll = new JScrollPane(fieldList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		scroll.setPreferredSize(new Dimension(200, 300));
-		
+
 		add(scroll);
 
 		setVisible(true);
@@ -58,7 +56,7 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 			}
 		}
 	}
-	
+
 	public EnumSet<T> getSelectedFields() {
 		EnumSet<T> included = EnumSet.noneOf(enumClass);
 		// Get the index of all the selected items
@@ -71,7 +69,7 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 
 	    return included;
 	}
-	
+
 	public List<T> getIncludedFields() {
 		List<T> included = new ArrayList<>();
 		// TODO This could probably be done more efficiently
@@ -82,7 +80,7 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		}
 		return included;
 	}
-	
+
 	@Override
 	public void setEnabled(boolean enabled) {
 		fieldList.setEnabled(enabled);
