@@ -5,46 +5,50 @@ import java.util.List;
 
 public enum RelicFieldEnum implements IFieldEnum {
 	Name,
-	HrAvgInt48("48HrAvg(Int)"),
-	HrAvgEx48("48HrAvg(Ex)"),
-	HrAvgFlaw48("48HrAvg(Flaw)"),
-	HrAvgRad48("48HrAvg(Rad)"),
-	
-	HrLowInt48("48HrLow(Int)"),
-	HrLowEx48("48HrLow(Ex)"),
-	HrLowFlaw48("48HrLow(Flaw)"),
-	HrLowRad48("48HrLow(Rad)"),
-	
-	HrHighInt48("48HrHigh(Int)"),
-	HrHighEx48("48HrHigh(Ex)"),
-	HrHighFlaw48("48HrHigh(Flaw)"),
-	HrHighRad48("48HrHigh(Rad)"),
-	
-	HrNumSalesInt48("48HrNumSales(Int)"),
-	HrNumSalesEx48("48HrNumSales(Ex)"),
-	HrNumSalesFlaw48("48HrNumSales(Flaw)"),
-	HrNumSalesRad48("48HrNumSales(Rad)"),
-	
-	DayAvgInt90("90DayAvg(Int)"),
-	DayAvgEx90("90DayAvg(Ex)"),
-	DayAvgFlaw90("90DayAvg(Flaw)"),
-	DayAvgRad90("90DayAvg(Rad)"),
-	
-	DayLowInt90("90DayLow(Int)"),
-	DayLowEx90("90DayLow(Ex)"),
-	DayLowFlaw90("90DayLow(Flaw)"),
-	DayLowRad90("90DayLow(Rad)"),
-	
-	DayHighInt90("90DayHigh(Int)"),
-	DayHighEx90("90DayHigh(Ex)"),
-	DayHighFlaw90("90DayHigh(Flaw)"),
-	DayHighRad90("90DayHigh(Rad)"),
-	
-	DayNumSalesInt90("90DayNumSales(Int)"),
-	DayNumSalesEx90("90DayNumSales(Ex)"),
-	DayNumSalesFlaw90("90DayNumSales(Flaw)"),
-	DayNumSalesRad90("90DayNumSales(Rad)"),
-	
+	AvgInt48Hr("48HrAvg(Int)"),
+	AvgEx48Hr("48HrAvg(Ex)"),
+	AvgFlaw48Hr("48HrAvg(Flaw)"),
+	AvgRad48Hr("48HrAvg(Rad)"),
+
+	LowInt48Hr("48HrLow(Int)"),
+	HighInt48Hr("48HrHigh(Int)"),
+
+	LowEx48Hr("48HrLow(Ex)"),
+	HighEx48Hr("48HrHigh(Ex)"),
+
+	LowFlaw48Hr("48HrLow(Flaw)"),
+	HighFlaw48Hr("48HrHigh(Flaw)"),
+
+	LowRad48hr("48HrLow(Rad)"),
+	HighRad48Hr("48HrHigh(Rad)"),
+
+	NumSalesInt48Hr("48HrNumSales(Int)"),
+	NumSalesEx48Hr("48HrNumSales(Ex)"),
+	NumSalesFlaw48Hr("48HrNumSales(Flaw)"),
+	NumSalesRad48Hr("48HrNumSales(Rad)"),
+
+	AvgInt90Day("90DayAvg(Int)"),
+	AvgEx90Day("90DayAvg(Ex)"),
+	AvgFlaw90Day("90DayAvg(Flaw)"),
+	AvgRad90Day("90DayAvg(Rad)"),
+
+	LowInt90Day("90DayLow(Int)"),
+	HighInt90Day("90DayHigh(Int)"),
+
+	LowEx90Day("90DayLow(Ex)"),
+	HighEx90Day("90DayHigh(Ex)"),
+
+	HighFlaw90Day("90DayHigh(Flaw)"),
+	LowFlaw90Day("90DayLow(Flaw)"),
+
+	HighRad90Day("90DayHigh(Rad)"),
+	LowRad90Day("90DayLow(Rad)"),
+
+	NumSalesInt90Day("90DayNumSales(Int)"),
+	NumSalesEx90Day("90DayNumSales(Ex)"),
+	NumSalesFlaw90Day("90DayNumSales(Flaw)"),
+	NumSalesRad90Day("90DayNumSales(Rad)"),
+
 	CommonDrop1("CommonDrop1"),
 	CommonDrop2("CommonDrop2"),
 	CommonDrop3("CommonDrop3"),
@@ -146,7 +150,7 @@ public enum RelicFieldEnum implements IFieldEnum {
 	;
 
 	private String defaultDisplayName;
-	
+
 	private RelicFieldEnum() {
 		this(null);
 	}
@@ -154,7 +158,7 @@ public enum RelicFieldEnum implements IFieldEnum {
 	private RelicFieldEnum(String defaultDisplayName) {
 		this.defaultDisplayName = defaultDisplayName;
 	}
-	
+
 	@Override
 	public String getDisplayName() {
 		if (defaultDisplayName != null) {
@@ -162,46 +166,46 @@ public enum RelicFieldEnum implements IFieldEnum {
 		}
 		return name();
 	}
-	
+
 	@Override
 	public String toString() {
 		return getDisplayName();
 	}
-	
+
 	public static List<RelicFieldEnum> get48HrFields() {
 		List<RelicFieldEnum> fields = new ArrayList<>();
-		fields.add(HrAvgInt48);
-		fields.add(HrAvgEx48);
-		fields.add(HrAvgFlaw48);
-		fields.add(HrAvgRad48);
-		fields.add(HrLowInt48);
-		fields.add(HrHighInt48);
-		fields.add(HrLowRad48);
-		fields.add(HrHighRad48);
-		fields.add(HrNumSalesInt48);
-		fields.add(HrNumSalesEx48);
-		fields.add(HrNumSalesFlaw48);
-		fields.add(HrNumSalesRad48);
+		fields.add(AvgInt48Hr);
+		fields.add(AvgEx48Hr);
+		fields.add(AvgFlaw48Hr);
+		fields.add(AvgRad48Hr);
+		fields.add(LowInt48Hr);
+		fields.add(HighInt48Hr);
+		fields.add(LowRad48hr);
+		fields.add(HighRad48Hr);
+		fields.add(NumSalesInt48Hr);
+		fields.add(NumSalesEx48Hr);
+		fields.add(NumSalesFlaw48Hr);
+		fields.add(NumSalesRad48Hr);
 		return fields;
 	}
-	
+
 	public static List<RelicFieldEnum> get90DayFields() {
 		List<RelicFieldEnum> fields = new ArrayList<>();
-		fields.add(DayAvgInt90);
-		fields.add(DayAvgEx90);
-		fields.add(DayAvgFlaw90);
-		fields.add(DayAvgRad90);
-		fields.add(DayLowInt90);
-		fields.add(DayHighInt90);
-		fields.add(DayLowRad90);
-		fields.add(DayHighRad90);
-		fields.add(DayNumSalesInt90);
-		fields.add(DayNumSalesEx90);
-		fields.add(DayNumSalesFlaw90);
-		fields.add(DayNumSalesRad90);
+		fields.add(AvgInt90Day);
+		fields.add(AvgEx90Day);
+		fields.add(AvgFlaw90Day);
+		fields.add(AvgRad90Day);
+		fields.add(LowInt90Day);
+		fields.add(HighInt90Day);
+		fields.add(LowRad90Day);
+		fields.add(HighRad90Day);
+		fields.add(NumSalesInt90Day);
+		fields.add(NumSalesEx90Day);
+		fields.add(NumSalesFlaw90Day);
+		fields.add(NumSalesRad90Day);
 		return fields;
 	}
-	
+
 	public static List<RelicFieldEnum> getDataFields() {
 		List<RelicFieldEnum> fields = new ArrayList<>();
 		fields.add(CommonDrop1);
