@@ -44,7 +44,9 @@ public class VoidRelic extends WarframeItem<RelicFieldEnum>{
 
 	public VoidRelic(JsonObject jsonObject, Map<String, PrimePart> primePartNamesToPartsMap, TypeResults<RelicFieldEnum> results){
 		super(results);
-		setResult(RelicFieldEnum.Name,  getName(jsonObject));
+		setResult(RelicFieldEnum.Name,  getStrProp(jsonObject, RELIC_NAME));
+		setResult(RelicFieldEnum.Era,  getStrProp(jsonObject, RELIC_ERA));
+		setResult(RelicFieldEnum.NameEra,  getName(jsonObject));
 
 		boolean isVaulted = jsonObject.has(IS_VAULTED.value) ? (getIntProp(jsonObject, IS_VAULTED) == 1) : true;
 		setResult(RelicFieldEnum.IsVaulted,isVaulted);
