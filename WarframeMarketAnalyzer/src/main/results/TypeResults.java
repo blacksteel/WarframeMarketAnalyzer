@@ -104,9 +104,7 @@ public abstract class TypeResults <T extends Enum<T> & IFieldEnum> {
 
 	public void outputResults(PrintWriter outputWriter) {
 		// Order the results
-		List<EnumMap<T, String>> orderedResults = new ArrayList<>();
-		orderedResults.addAll(results);
-		orderedResults.sort(getComparator());
+		results.sort(new RowComparator());
 
 		TokenList outputTokens = new TokenList();
 		for (T field : fieldList) {
@@ -114,7 +112,7 @@ public abstract class TypeResults <T extends Enum<T> & IFieldEnum> {
 		}
 		outputWriter.println(outputTokens.toCSV());
 
-		for (EnumMap<T, String> lineValues : orderedResults) {
+		for (EnumMap<T, String> lineValues : results) {
 			printLine(lineValues, outputWriter);
 		}
 	}
@@ -142,10 +140,6 @@ public abstract class TypeResults <T extends Enum<T> & IFieldEnum> {
 		return includedFields;
 	}
 
-	public Comparator<EnumMap<T, String>> getComparator() {
-		return new RowComparator();
-	}
-
 	/**
 	 * Sort results rows based on the name field
 	 *
@@ -159,5 +153,7 @@ public abstract class TypeResults <T extends Enum<T> & IFieldEnum> {
 		public int compare(EnumMap<T, String> o1, EnumMap<T, String> o2) {
 			return o1.get(nameField).compareTo(o2.get(nameField));
 		}
+
+
 	}
 }

@@ -1,10 +1,7 @@
 package enums.fields;
 
 public enum RelicFieldEnum implements IFieldEnum {
-	Name("Name", false),
-	Era("Era", false),
-	NameEra("Name Era"),
-
+	Name,
 	AvgInt48Hr("48HrAvg(Int)"),
 	AvgEx48Hr("48HrAvg(Ex)"),
 	AvgFlaw48Hr("48HrAvg(Flaw)"),
