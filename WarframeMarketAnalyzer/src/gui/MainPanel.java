@@ -15,7 +15,7 @@ public class MainPanel extends JFrame implements IPackListener{
 	private JPanel contentPanel;
 	private OptionPanel optionPanel;
 
-	public MainPanel(AnalysisInvoker invoker) {
+	public MainPanel(AnalysisInvoker invoker) throws ClassNotFoundException {
 		super("WarframeMarketAnalyzer");
 		contentPanel = new JPanel();
 		optionPanel = new OptionPanel(this);

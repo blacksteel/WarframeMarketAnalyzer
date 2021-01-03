@@ -22,7 +22,7 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 	private JButton addAll;
 	private FieldList<T> usedList;
 
-	public FieldSelector(Class<T> enumClass) {
+	public FieldSelector(Class<T> enumClass) throws ClassNotFoundException {
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
 		unusedList = new FieldList<T>("Unused", enumClass, FieldUtils.nonDefaultFields(enumClass));

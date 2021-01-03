@@ -33,7 +33,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 
 	private JButton runButton;
 
-	public OptionPanel(MainPanel main) {
+	public OptionPanel(MainPanel main) throws ClassNotFoundException {
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -121,7 +121,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		relicSelector.setEnabled(processRelics.isSelected());
 	}
 
-	private int addAdvanced(IPackListener packListener, GridBagConstraints c, int y) {
+	private int addAdvanced(IPackListener packListener, GridBagConstraints c, int y) throws ClassNotFoundException {
 
 		c.fill = GridBagConstraints.NONE;
 		c.ipady = 0;
