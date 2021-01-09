@@ -6,8 +6,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -51,8 +49,6 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		fieldList.setDropMode(DropMode.INSERT);
 		fieldList.setTransferHandler(new ReorderHandler());
 
-		System.out.println(enumClass.getCanonicalName() + ": " + System.identityHashCode(fieldList));
-
 		JScrollPane scroll = new JScrollPane(fieldList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		scroll.setPreferredSize(new Dimension(200, 300));
@@ -62,34 +58,22 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		setVisible(true);
 	}
 
-	public void removeFields(Collection<T> fields) {
-		for (int i = fieldModel.getSize()-1; i >= 0; i--) {
-			if (fields.contains(fieldModel.get(i).getEnum())) {
-				fieldModel.remove(i);
-			}
-		}
-	}
-
-	public void removeFieldItems(Collection<FieldItem<T>> fields) {
-		for (FieldItem<T> field : fields) {
+	public List<FieldItem<T>> removeSelectedFields() {
+		List<FieldItem<T>> selected = getSelectedFields();
+		for (FieldItem<T> field : selected) {
 			fieldModel.removeElement(field);
 		}
+		return selected;
 	}
 
-	public void addFields(List<T> fields) {
-		for (T field : fields) {
-			if (!fieldModel.contains(field)) {
-				fieldModel.addElement(new FieldItem<T>(field));
-			}
-		}
+	public List<FieldItem<T>> removeAllFields() {
+		List<FieldItem<T>> includedField = getIncludedFields();
+		fieldModel.removeAllElements();
+		return includedField;
 	}
 
-	public void addFieldsItems(List<FieldItem<T>> fields) {
-		for (FieldItem<T> field : fields) {
-			if (!fieldModel.contains(field)) {
-				fieldModel.addElement(field);
-			}
-		}
+	public void addFields(List<FieldItem<T>> newFields) {
+		fieldModel.addAll(newFields);
 	}
 
 	public List<FieldItem<T>> getSelectedFields() {
@@ -157,10 +141,8 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
         			int idx = transferField.index;
                 	// If moving in the same list, may need to offset the index by the newly moved items
         			if (isSame && idx >= newIndex) {
-        				System.out.println("Remove("+idx+") "+fieldModel.get(idx+moveList.size()));
         				fieldModel.remove(idx+moveList.size());
         			} else {
-        				System.out.println("Remove("+idx+") "+fieldModel.get(idx));
         				fieldModel.remove(idx);
         			}
         		}
@@ -199,7 +181,6 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 
 		private FieldTransferable(List<FieldItemTransferable> moveValues) {
 			this.moveValues = moveValues;
-			System.out.println(Arrays.toString(moveValues.toArray()));
 		}
 
 		@Override

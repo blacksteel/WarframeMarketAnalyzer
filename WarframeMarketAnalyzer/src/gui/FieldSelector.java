@@ -2,9 +2,6 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -46,8 +43,9 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 		removeAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				unusedList.addFields(Arrays.asList(enumClass.getEnumConstants()));
-				usedList.removeFields(EnumSet.allOf(enumClass));
+				List<FieldItem<T>> allFields = usedList.removeAllFields();
+				unusedList.addFields(allFields);
+
 			}
 		});
 		buttonPanel.add(removeAll);
@@ -56,9 +54,8 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 		removeSelected.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<FieldItem<T>> selected = usedList.getSelectedFields();
-				unusedList.addFieldsItems(new ArrayList<>(selected));
-				usedList.removeFieldItems(selected);
+				List<FieldItem<T>> allFields = usedList.removeSelectedFields();
+				unusedList.addFields(allFields);
 			}
 		});
 		buttonPanel.add(removeSelected);
@@ -67,9 +64,8 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 		addSelected.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				List<FieldItem<T>> selected = unusedList.getSelectedFields();
-				unusedList.removeFieldItems(selected);
-				usedList.addFieldsItems(new ArrayList<>(selected));
+				List<FieldItem<T>> allFields = unusedList.removeSelectedFields();
+				usedList.addFields(allFields);
 			}
 		});
 		buttonPanel.add(addSelected);
@@ -78,8 +74,8 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 		addAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				unusedList.removeFields(EnumSet.allOf(enumClass));
-				usedList.addFields(Arrays.asList(enumClass.getEnumConstants()));
+				List<FieldItem<T>> allFields = unusedList.removeAllFields();
+				usedList.addFields(allFields);
 			}
 		});
 		buttonPanel.add(addAll);
