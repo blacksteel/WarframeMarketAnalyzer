@@ -51,6 +51,8 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		fieldList.setDropMode(DropMode.INSERT);
 		fieldList.setTransferHandler(new ReorderHandler());
 
+		System.out.println(enumClass.getCanonicalName() + ": " + System.identityHashCode(fieldList));
+
 		JScrollPane scroll = new JScrollPane(fieldList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		scroll.setPreferredSize(new Dimension(200, 300));
@@ -124,8 +126,8 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 
 	private class ReorderHandler extends TransferHandler {
 
-        private int[] selectedIx;
         private int newIndex;
+        private boolean isSame;
 
         @Override
         public int getSourceActions(JComponent comp) {
@@ -134,28 +136,29 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 
         @Override
         public Transferable createTransferable(JComponent comp) {
-    	    selectedIx = fieldList.getSelectedIndices();
-    	    System.out.println(Arrays.toString(selectedIx));
-    	    List<FieldItem<T>> moveValues = new ArrayList<>();
-    	    for (int i=0; i<selectedIx.length; i++) {
-    	    	moveValues.add(fieldModel.get(selectedIx[i]));
-    	    }
+        	List<FieldItemTransferable> moveValues = new ArrayList<>();
+        	for (int idx : fieldList.getSelectedIndices()) {
+        		FieldItem<T> field = fieldModel.get(idx);
+        		moveValues.add(new FieldItemTransferable(field, idx));
+        	}
+        	// On each transfer, start it as false. Set it to true during the import.
+        	isSame = false;
             return new FieldTransferable(moveValues);
         }
 
         @Override
         public void exportDone(JComponent comp, Transferable trans, int action) {
             if (action == MOVE) {
-//            	boolean isSame = fieldModel.contains(trans)
-
+            	List<FieldItemTransferable> moveList = ((FieldTransferable)trans).moveValues;
             	// Work backward through the list so we don't need to deal with adjusting the indices
             	// to deal with items removed above.
-        		for (int i=selectedIx.length-1; i>=0; i--) {
-        			int idx = selectedIx[i];
+        		for (int i=moveList.size()-1; i>=0; i--) {
+        			FieldItemTransferable transferField = moveList.get(i);
+        			int idx = transferField.index;
                 	// If moving in the same list, may need to offset the index by the newly moved items
-        			if (comp == fieldList && idx >= newIndex) {
-        				System.out.println("Remove("+idx+") "+fieldModel.get(idx+selectedIx.length));
-        				fieldModel.remove(idx+selectedIx.length);
+        			if (isSame && idx >= newIndex) {
+        				System.out.println("Remove("+idx+") "+fieldModel.get(idx+moveList.size()));
+        				fieldModel.remove(idx+moveList.size());
         			} else {
         				System.out.println("Remove("+idx+") "+fieldModel.get(idx));
         				fieldModel.remove(idx);
@@ -172,12 +175,16 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
         @Override
         public boolean importData(TransferHandler.TransferSupport support) {
             try {
-            	List<FieldItem<T>> fieldList = (List<FieldItem<T>>) support.getTransferable().getTransferData(fieldDataFlavor);
+
+            	List<FieldItemTransferable> moveList = (List<FieldItemTransferable>) support.getTransferable().getTransferData(fieldDataFlavor);
                 JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
                 newIndex = dl.getIndex();
-                for (int i=0; i<fieldList.size(); i++) {
-                	fieldModel.add(newIndex+i, fieldList.get(i));
+            	isSame = true;
+                List<FieldItem<T>> fieldList = new ArrayList<>();
+                for (FieldItemTransferable fieldItemTransferable : moveList) {
+                	fieldList.add(fieldItemTransferable.fieldItem);
                 }
+                fieldModel.addAll(newIndex, fieldList);
                 return true;
             } catch (UnsupportedFlavorException | IOException | ClassCastException e) {
                 e.printStackTrace();
@@ -188,9 +195,9 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 	}
 
 	private class FieldTransferable implements Transferable {
-		private List<FieldItem<T>> moveValues;
+		private List<FieldItemTransferable> moveValues;
 
-		private FieldTransferable(List<FieldItem<T>> moveValues) {
+		private FieldTransferable(List<FieldItemTransferable> moveValues) {
 			this.moveValues = moveValues;
 			System.out.println(Arrays.toString(moveValues.toArray()));
 		}
@@ -206,8 +213,18 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		}
 
 		@Override
-		public List<FieldItem<T>> getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+		public List<FieldItemTransferable> getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 			return moveValues;
+		}
+	}
+
+	private class FieldItemTransferable {
+		private final FieldItem<T> fieldItem;
+		private final int index;
+
+		private FieldItemTransferable(FieldItem<T> fieldItem, int index) {
+			this.fieldItem = fieldItem;
+			this.index = index;
 		}
 
 	}
