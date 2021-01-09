@@ -9,6 +9,10 @@ import java.util.List;
 
 import enums.ItemType;
 import enums.fields.IFieldEnum;
+import enums.fields.ModFieldEnum;
+import enums.fields.PrimeFieldEnum;
+import enums.fields.RelicFieldEnum;
+import gui.FieldItem;
 import gui.IOptionProvider;
 import utils.FieldUtils;
 import utils.TokenList;
@@ -18,7 +22,7 @@ public abstract class TypeResults <T extends Enum<T> & IFieldEnum> {
 	private Class<T> enumClass;
 	private ItemType type;
 	private T nameField;
-	private List<T> fieldList;
+	private List<FieldItem<T>> fieldList;
 
 	private List<EnumMap<T, String>> results = new ArrayList<>();
 
@@ -27,15 +31,22 @@ public abstract class TypeResults <T extends Enum<T> & IFieldEnum> {
 		this.enumClass = enumClass;
 		this.nameField = nameField;
 		this.type = type;
+		fieldList = new ArrayList<>();
 		switch (type) {
 		case MOD:
-			fieldList = (List<T>)optionProvider.getModFields();
+			for (FieldItem<ModFieldEnum> field : optionProvider.getModFields()) {
+				fieldList.add((FieldItem<T>)field);
+			}
 			break;
 		case PRIME_PART:
-			fieldList = (List<T>)optionProvider.getPrimeFields();
+			for (FieldItem<PrimeFieldEnum> field : optionProvider.getPrimeFields()) {
+				fieldList.add((FieldItem<T>)field);
+			}
 			break;
 		case VOID_RELIC:
-			fieldList = (List<T>)optionProvider.getRelicFields();
+			for (FieldItem<RelicFieldEnum> field : optionProvider.getRelicFields()) {
+				fieldList.add((FieldItem<T>)field);
+			}
 			break;
 		default:
 			throw new InvalidParameterException("Invalid item type: "+type);
@@ -107,8 +118,8 @@ public abstract class TypeResults <T extends Enum<T> & IFieldEnum> {
 		results.sort(new RowComparator());
 
 		TokenList outputTokens = new TokenList();
-		for (T field : fieldList) {
-			outputTokens.add(field.getDisplayName());
+		for (FieldItem<T> field : fieldList) {
+			outputTokens.add(field.toString());
 		}
 		outputWriter.println(outputTokens.toCSV());
 
@@ -119,8 +130,8 @@ public abstract class TypeResults <T extends Enum<T> & IFieldEnum> {
 
 	private void printLine(EnumMap<T, String> lineValues, PrintWriter outputWriter) {
 		TokenList outputTokens = new TokenList();
-		for (T fieldName : fieldList) {
-			String value = lineValues.get(fieldName);
+		for (FieldItem<T> fieldName : fieldList) {
+			String value = lineValues.get(fieldName.getEnum());
 			if (value != null) {
 				outputTokens.add(value);
 			} else {

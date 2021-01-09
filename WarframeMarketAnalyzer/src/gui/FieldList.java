@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.EnumSet;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -29,10 +29,10 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 
 	private Class<T> enumClass;
 	private DataFlavor fieldDataFlavor;
-	private JList<T> fieldList;
-	private DefaultListModel<T> fieldModel;
+	private JList<FieldItem<T>> fieldList;
+	private DefaultListModel<FieldItem<T>> fieldModel;
 
-	public FieldList(String label, Class<T> enumClass, List<T> initial) throws ClassNotFoundException {
+	public FieldList(String label, Class<T> enumClass, List<FieldItem<T>> initial) throws ClassNotFoundException {
 		this.enumClass = enumClass;
 		String dataFlavor = DataFlavor.javaJVMLocalObjectMimeType +
                 ";class=\""+enumClass.getCanonicalName()+"\"";
@@ -43,7 +43,7 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		add(new JLabel(label));
 
 		fieldModel = new DefaultListModel<>();
-		for (T field : initial) {
+		for (FieldItem<T> field : initial) {
 			fieldModel.addElement(field);
 		}
 		fieldList = new JList<>(fieldModel);
@@ -61,7 +61,15 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 	}
 
 	public void removeFields(Collection<T> fields) {
-		for (T field : fields) {
+		for (int i = fieldModel.getSize()-1; i >= 0; i--) {
+			if (fields.contains(fieldModel.get(i).getEnum())) {
+				fieldModel.remove(i);
+			}
+		}
+	}
+
+	public void removeFieldItems(Collection<FieldItem<T>> fields) {
+		for (FieldItem<T> field : fields) {
 			fieldModel.removeElement(field);
 		}
 	}
@@ -69,13 +77,21 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 	public void addFields(List<T> fields) {
 		for (T field : fields) {
 			if (!fieldModel.contains(field)) {
+				fieldModel.addElement(new FieldItem<T>(field));
+			}
+		}
+	}
+
+	public void addFieldsItems(List<FieldItem<T>> fields) {
+		for (FieldItem<T> field : fields) {
+			if (!fieldModel.contains(field)) {
 				fieldModel.addElement(field);
 			}
 		}
 	}
 
-	public EnumSet<T> getSelectedFields() {
-		EnumSet<T> included = EnumSet.noneOf(enumClass);
+	public List<FieldItem<T>> getSelectedFields() {
+		List<FieldItem<T>> included = new ArrayList<>();
 		// Get the index of all the selected items
 	    int[] selectedIx = fieldList.getSelectedIndices();
 
@@ -87,13 +103,11 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 	    return included;
 	}
 
-	public List<T> getIncludedFields() {
-		List<T> included = new ArrayList<>();
-		// TODO This could probably be done more efficiently
-		for (T field : enumClass.getEnumConstants()) {
-			if (fieldModel.contains(field)) {
-				included.add(field);
-			}
+	public List<FieldItem<T>> getIncludedFields() {
+		List<FieldItem<T>> included = new ArrayList<>();
+		Enumeration<FieldItem<T>> elements = fieldModel.elements();
+		while(elements.hasMoreElements()) {
+			included.add(elements.nextElement());
 		}
 		return included;
 	}
@@ -103,7 +117,7 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		fieldList.setEnabled(enabled);
 	}
 
-	protected void setFields(List<T> fields) {
+	protected void setFields(List<FieldItem<T>> fields) {
 		fieldModel.removeAllElements();
 		fieldModel.addAll(fields);
 	}
@@ -122,7 +136,7 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
         public Transferable createTransferable(JComponent comp) {
     	    selectedIx = fieldList.getSelectedIndices();
     	    System.out.println(Arrays.toString(selectedIx));
-    	    List<T> moveValues = new ArrayList<>();
+    	    List<FieldItem<T>> moveValues = new ArrayList<>();
     	    for (int i=0; i<selectedIx.length; i++) {
     	    	moveValues.add(fieldModel.get(selectedIx[i]));
     	    }
@@ -132,6 +146,8 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
         @Override
         public void exportDone(JComponent comp, Transferable trans, int action) {
             if (action == MOVE) {
+//            	boolean isSame = fieldModel.contains(trans)
+
             	// Work backward through the list so we don't need to deal with adjusting the indices
             	// to deal with items removed above.
         		for (int i=selectedIx.length-1; i>=0; i--) {
@@ -156,7 +172,7 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
         @Override
         public boolean importData(TransferHandler.TransferSupport support) {
             try {
-            	List<T> fieldList = (List<T>) support.getTransferable().getTransferData(fieldDataFlavor);
+            	List<FieldItem<T>> fieldList = (List<FieldItem<T>>) support.getTransferable().getTransferData(fieldDataFlavor);
                 JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
                 newIndex = dl.getIndex();
                 for (int i=0; i<fieldList.size(); i++) {
@@ -172,9 +188,9 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 	}
 
 	private class FieldTransferable implements Transferable {
-		private List<T> moveValues;
+		private List<FieldItem<T>> moveValues;
 
-		private FieldTransferable(List<T> moveValues) {
+		private FieldTransferable(List<FieldItem<T>> moveValues) {
 			this.moveValues = moveValues;
 			System.out.println(Arrays.toString(moveValues.toArray()));
 		}
@@ -190,7 +206,7 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		}
 
 		@Override
-		public List<T> getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+		public List<FieldItem<T>> getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 			return moveValues;
 		}
 

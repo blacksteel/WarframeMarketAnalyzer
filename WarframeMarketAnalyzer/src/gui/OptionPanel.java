@@ -207,7 +207,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 	}
 
 	@Override
-	public List<ModFieldEnum> getModFields() {
+	public List<FieldItem<ModFieldEnum>> getModFields() {
 		return modSelector.getFields();
 	}
 
@@ -217,7 +217,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 	}
 
 	@Override
-	public List<RelicFieldEnum> getRelicFields() {
+	public List<FieldItem<RelicFieldEnum>> getRelicFields() {
 		return relicSelector.getFields();
 	}
 
@@ -227,7 +227,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 	}
 
 	@Override
-	public List<PrimeFieldEnum> getPrimeFields() {
+	public List<FieldItem<PrimeFieldEnum>> getPrimeFields() {
 		return primeSelector.getFields();
 	}
 }

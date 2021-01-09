@@ -56,9 +56,9 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 		removeSelected.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				EnumSet<T> selected = usedList.getSelectedFields();
-				unusedList.addFields(new ArrayList<>(selected));
-				usedList.removeFields(selected);
+				List<FieldItem<T>> selected = usedList.getSelectedFields();
+				unusedList.addFieldsItems(new ArrayList<>(selected));
+				usedList.removeFieldItems(selected);
 			}
 		});
 		buttonPanel.add(removeSelected);
@@ -67,9 +67,9 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 		addSelected.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				EnumSet<T> selected = unusedList.getSelectedFields();
-				unusedList.removeFields(selected);
-				usedList.addFields(new ArrayList<>(selected));
+				List<FieldItem<T>> selected = unusedList.getSelectedFields();
+				unusedList.removeFieldItems(selected);
+				usedList.addFieldsItems(new ArrayList<>(selected));
 			}
 		});
 		buttonPanel.add(addSelected);
@@ -118,7 +118,7 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 		usedList.setEnabled(enabled);
 	}
 
-	public List<T> getFields() {
+	public List<FieldItem<T>> getFields() {
 		return usedList.getIncludedFields();
 	}
 
