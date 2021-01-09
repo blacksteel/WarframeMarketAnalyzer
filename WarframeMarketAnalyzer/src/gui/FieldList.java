@@ -7,6 +7,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -59,13 +60,13 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		setVisible(true);
 	}
 
-	public void removeFields(EnumSet<T> fields) {
+	public void removeFields(Collection<T> fields) {
 		for (T field : fields) {
 			fieldModel.removeElement(field);
 		}
 	}
 
-	public void addFields(EnumSet<T> fields) {
+	public void addFields(List<T> fields) {
 		for (T field : fields) {
 			if (!fieldModel.contains(field)) {
 				fieldModel.addElement(field);

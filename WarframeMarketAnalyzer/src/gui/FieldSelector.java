@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 		removeAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				unusedList.addFields(EnumSet.allOf(enumClass));
+				unusedList.addFields(Arrays.asList(enumClass.getEnumConstants()));
 				usedList.removeFields(EnumSet.allOf(enumClass));
 			}
 		});
@@ -45,7 +47,7 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				EnumSet<T> selected = usedList.getSelectedFields();
-				unusedList.addFields(selected);
+				unusedList.addFields(new ArrayList<>(selected));
 				usedList.removeFields(selected);
 			}
 		});
@@ -57,7 +59,7 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				EnumSet<T> selected = unusedList.getSelectedFields();
 				unusedList.removeFields(selected);
-				usedList.addFields(selected);
+				usedList.addFields(new ArrayList<>(selected));
 			}
 		});
 		buttonPanel.add(addSelected);
@@ -67,7 +69,7 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				unusedList.removeFields(EnumSet.allOf(enumClass));
-				usedList.addFields(EnumSet.allOf(enumClass));
+				usedList.addFields(Arrays.asList(enumClass.getEnumConstants()));
 			}
 		});
 		buttonPanel.add(addAll);
