@@ -103,6 +103,11 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		fieldList.setEnabled(enabled);
 	}
 
+	protected void setFields(List<T> fields) {
+		fieldModel.removeAllElements();
+		fieldModel.addAll(fields);
+	}
+
 	private class ReorderHandler extends TransferHandler {
 
         private int[] selectedIx;

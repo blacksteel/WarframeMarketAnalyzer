@@ -23,12 +23,22 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 	private JButton addSelected;
 	private JButton addAll;
 	private FieldList<T> usedList;
+	private JButton resetButton;
 
 	public FieldSelector(Class<T> enumClass) throws ClassNotFoundException {
-		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		add(constructListPanel(enumClass));
+		add(constructFieldButtonPanel(enumClass));
+	}
+
+	private JPanel constructListPanel(Class<T> enumClass) throws ClassNotFoundException {
+		JPanel listPanel = new JPanel();
+
+		listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.LINE_AXIS));
 
 		unusedList = new FieldList<T>("Unused", enumClass, FieldUtils.nonDefaultFields(enumClass));
-		add(unusedList);
+		listPanel.add(unusedList);
 
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
@@ -73,10 +83,29 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 			}
 		});
 		buttonPanel.add(addAll);
-		add(buttonPanel);
+		listPanel.add(buttonPanel);
 
 		usedList = new FieldList<T>("Used", enumClass, FieldUtils.defaultFields(enumClass));
-		add(usedList);
+		listPanel.add(usedList);
+
+		return listPanel;
+	}
+
+	private JPanel constructFieldButtonPanel(Class<T> enumClass) {
+		JPanel fieldButtonPanel = new JPanel();
+		fieldButtonPanel.setLayout(new BoxLayout(fieldButtonPanel, BoxLayout.LINE_AXIS));
+
+		resetButton = new JButton("Reset to defaults");
+		resetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				unusedList.setFields(FieldUtils.nonDefaultFields(enumClass));
+				usedList.setFields(FieldUtils.defaultFields(enumClass));
+			}
+		});
+		fieldButtonPanel.add(resetButton);
+
+		return fieldButtonPanel;
 	}
 
 	@Override
