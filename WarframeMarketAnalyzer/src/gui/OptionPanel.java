@@ -121,14 +121,14 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		relicSelector.setEnabled(processRelics.isSelected());
 	}
 
-	private int addAdvanced(IPackListener packListener, GridBagConstraints c, int y) throws ClassNotFoundException {
+	private int addAdvanced(MainPanel main, GridBagConstraints c, int y) throws ClassNotFoundException {
 
 		c.fill = GridBagConstraints.NONE;
 		c.ipady = 0;
 		c.gridwidth = 1;
 		c.ipadx = 10;
 
-		modSelector = new FieldSelector<>(ModFieldEnum.class);
+		modSelector = new FieldSelector<>(main, ModFieldEnum.class);
 		modSelector.setVisible(false);
 		c.gridx = 0;
 		c.gridy = y;
@@ -138,7 +138,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		c.gridy = y;
 		add(new JSeparator(SwingConstants.VERTICAL),c);
 
-		primeSelector = new FieldSelector<>(PrimeFieldEnum.class);
+		primeSelector = new FieldSelector<>(main, PrimeFieldEnum.class);
 		primeSelector.setVisible(false);
 		c.gridx = 2;
 		c.gridy = y;
@@ -148,7 +148,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 		c.gridy = y;
 		add(new JSeparator(SwingConstants.VERTICAL),c);
 
-		relicSelector = new FieldSelector<>(RelicFieldEnum.class);
+		relicSelector = new FieldSelector<>(main, RelicFieldEnum.class);
 		relicSelector.setVisible(false);
 		c.gridx = 4;
 		c.gridy = y;
@@ -164,7 +164,7 @@ public class OptionPanel extends JPanel implements IOptionProvider {
 				modSelector.setVisible(enableAdvanced.isSelected());
 				primeSelector.setVisible(enableAdvanced.isSelected());
 				relicSelector.setVisible(enableAdvanced.isSelected());
-				packListener.resize();
+				main.resize();
 			}
 		});
 		c.fill = GridBagConstraints.NONE;

@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -22,19 +23,18 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 	private FieldList<T> usedList;
 	private JButton resetButton;
 
-	public FieldSelector(Class<T> enumClass) throws ClassNotFoundException {
-
+	public FieldSelector(Frame parent, Class<T> enumClass) throws ClassNotFoundException {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		add(constructListPanel(enumClass));
+		add(constructListPanel(parent, enumClass));
 		add(constructFieldButtonPanel(enumClass));
 	}
 
-	private JPanel constructListPanel(Class<T> enumClass) throws ClassNotFoundException {
+	private JPanel constructListPanel(Frame parent, Class<T> enumClass) throws ClassNotFoundException {
 		JPanel listPanel = new JPanel();
 
 		listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.LINE_AXIS));
 
-		unusedList = new FieldList<T>("Unused", enumClass, FieldUtils.nonDefaultFields(enumClass));
+		unusedList = new FieldList<T>(parent, "Unused", enumClass, FieldUtils.nonDefaultFields(enumClass));
 		listPanel.add(unusedList);
 
 		buttonPanel = new JPanel();
@@ -81,7 +81,7 @@ public class FieldSelector<T extends Enum<T> & IFieldEnum> extends JPanel {
 		buttonPanel.add(addAll);
 		listPanel.add(buttonPanel);
 
-		usedList = new FieldList<T>("Used", enumClass, FieldUtils.defaultFields(enumClass));
+		usedList = new FieldList<T>(parent, "Used", enumClass, FieldUtils.defaultFields(enumClass));
 		listPanel.add(usedList);
 
 		return listPanel;

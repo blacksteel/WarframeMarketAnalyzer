@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -30,7 +31,7 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 	private JList<FieldItem<T>> fieldList;
 	private DefaultListModel<FieldItem<T>> fieldModel;
 
-	public FieldList(String label, Class<T> enumClass, List<FieldItem<T>> initial) throws ClassNotFoundException {
+	public FieldList(Frame parent, String label, Class<T> enumClass, List<FieldItem<T>> initial) throws ClassNotFoundException {
 		this.enumClass = enumClass;
 		String dataFlavor = DataFlavor.javaJVMLocalObjectMimeType +
                 ";class=\""+enumClass.getCanonicalName()+"\"";
@@ -48,6 +49,8 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		fieldList.setDragEnabled(true);
 		fieldList.setDropMode(DropMode.INSERT);
 		fieldList.setTransferHandler(new ReorderHandler());
+
+		fieldList.addMouseListener(new FieldItemClickListener<T>(parent, this));
 
 		JScrollPane scroll = new JScrollPane(fieldList, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
@@ -103,9 +106,22 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 		fieldList.setEnabled(enabled);
 	}
 
+	public void fieldChanged(FieldItem<T> field, String newDisplayName) {
+		// Don't allow an empty
+		if (!"".equals(newDisplayName)) {
+			field.setDisplayString(newDisplayName);
+			fieldList.repaint();
+			fieldList.revalidate();
+		}
+	}
+
 	protected void setFields(List<FieldItem<T>> fields) {
 		fieldModel.removeAllElements();
 		fieldModel.addAll(fields);
+	}
+
+	JList<FieldItem<T>> getList() {
+		return fieldList;
 	}
 
 	private class ReorderHandler extends TransferHandler {
@@ -158,7 +174,8 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
         public boolean importData(TransferHandler.TransferSupport support) {
             try {
 
-            	List<FieldItemTransferable> moveList = (List<FieldItemTransferable>) support.getTransferable().getTransferData(fieldDataFlavor);
+            	List<FieldItemTransferable> moveList =
+            			(List<FieldItemTransferable>) support.getTransferable().getTransferData(fieldDataFlavor);
                 JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
                 newIndex = dl.getIndex();
             	isSame = true;
@@ -207,6 +224,5 @@ public class FieldList<T extends Enum<T> & IFieldEnum> extends JPanel {
 			this.fieldItem = fieldItem;
 			this.index = index;
 		}
-
 	}
 }
