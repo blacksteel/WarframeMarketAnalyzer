@@ -1,110 +1,92 @@
 package items;
 
-import static enums.comparable.MiscWarframeTerms.*;
-import static enums.comparable.UniqueNameSnippet.*;
-import static enums.jsonProps.WarframeStatusPropName.*;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import dataSourceHandlers.WarframeMarketHandler;
-import utils.TokenList;
-
-import static utils.JSONUtils.*;
+import static enums.comparable.MiscWarframeTerms.PARAZON;
+import static enums.comparable.MiscWarframeTerms.REQUIEM;
+import static enums.comparable.UniqueNameSnippet.CONCLAVE_MOD_UNIQUE_NAME_SNIPPET;
+import static enums.comparable.UniqueNameSnippet.REQUIEM_MOD_UNIQUE_NAME_SNIPPET;
+import static enums.jsonProps.WarframeStatusPropName.AUGMENT;
+import static enums.jsonProps.WarframeStatusPropName.COMPAT_NAME;
+import static enums.jsonProps.WarframeStatusPropName.MAX_RANK;
+import static enums.jsonProps.WarframeStatusPropName.MOD_SET;
+import static enums.jsonProps.WarframeStatusPropName.RARITY;
+import static enums.jsonProps.WarframeStatusPropName.SIMPLE_NAME;
+import static enums.jsonProps.WarframeStatusPropName.TYPE;
+import static enums.jsonProps.WarframeStatusPropName.UNIQUE_NAME;
+import static utils.JSONUtils.getBoolProp;
+import static utils.JSONUtils.getIntProp;
+import static utils.JSONUtils.getStrProp;
 import static utils.MiscUtils.trimAndCapitalizeCorrectly;
 
 import java.io.IOException;
 
-public class Mod extends StandardPricedWarframeItem{
-	private static final String DATA_HEADER_SUFFIX = "Rank,MaxRank,Type,Compatibility,Rarity,IsAugment,IsSet,IsConclaveOnly";
+import com.google.gson.JsonObject;
 
-	public final int rankToPriceCheck;
-	public final int maxRank;
-	public final String type;
-	public final String compatibility;
-	public final String rarity;
-	public final boolean isAugment;
-	public final boolean isSet;
-	public final boolean isRanked;
-	public final boolean isConclaveOnly;
+import dataSourceHandlers.WarframeMarketHandler;
+import dataSourceHandlers.WarframeMarketHandler.TradeStatsPair;
+import enums.fields.ModFieldEnum;
+import main.results.TypeResults;
 
-	public Mod(JsonElement jsonObjectElement){
-		this((JsonObject)jsonObjectElement);
-	}
+public class Mod extends WarframeItem<ModFieldEnum> {
 
-	public Mod(JsonObject jsonObject){
-		super(getStrProp(jsonObject, SIMPLE_NAME));
+	private int rankToPriceCheck;
+	private boolean isRanked;
+
+	public Mod(JsonObject jsonObject, TypeResults<ModFieldEnum> results) {
+		super(results);
+
+		setResult(ModFieldEnum.Name, getStrProp(jsonObject, SIMPLE_NAME));
 
 		String type = getStrProp(jsonObject, TYPE);
 		if(type.toLowerCase().endsWith(" mod")){
 			type = type.substring(0, (type.length() - 4));
 		}
-		
+
 		String uniqueName = getStrProp(jsonObject, UNIQUE_NAME);
 		String compatName = getStrProp(jsonObject, COMPAT_NAME);
 		int maxRank = getIntProp(jsonObject, MAX_RANK);
-		
+
 		if(CONCLAVE_MOD_UNIQUE_NAME_SNIPPET.containsValue(uniqueName)){
-			this.type = trimAndCapitalizeCorrectly(type);
-			this.isRanked = false;
-			this.rankToPriceCheck = 0;
-			this.maxRank = 0;
-			this.isConclaveOnly = true;
+			setResult(ModFieldEnum.Type, trimAndCapitalizeCorrectly(type));
+			setResult(ModFieldEnum.IsAugment, "false");
+			rankToPriceCheck = 0;
+			maxRank = 0;
+			setResult(ModFieldEnum.IsConclaveOnly,"true");
 		}
 		else{
-			this.isConclaveOnly = false;
+			setResult(ModFieldEnum.IsConclaveOnly,"false");
 
 			if(PARAZON.valueEquals(compatName)){
 				//Parazon mod
 				compatName = PARAZON.value;
-				
+
 				if(REQUIEM_MOD_UNIQUE_NAME_SNIPPET.containsValue(uniqueName)){
 					//Requiem mod, searching for full ranks rather than 0 ranks
-					this.type = REQUIEM.value;
-					this.isRanked = true;
-					this.rankToPriceCheck = 3;
-					this.maxRank = 3;
+					setResult(ModFieldEnum.Type, REQUIEM.value);
+					isRanked = true;
+					rankToPriceCheck = 3;
+					maxRank = 3;
 				}
 				else{
 					//Other parazon mod, not a ranked item
-					this.type = PARAZON.value;
-					this.isRanked = false;
-					this.rankToPriceCheck = 0;
-					this.maxRank = 0;
+					setResult(ModFieldEnum.Type, PARAZON.value);
+					isRanked = false;
+					rankToPriceCheck = 0;
+					maxRank = 0;
 				}
 			}
 			else{
-				this.type = type;
-				this.isRanked = (maxRank > 0);
-				this.rankToPriceCheck = 0;
-				this.maxRank = maxRank;
+				setResult(ModFieldEnum.Type, type);
+				isRanked = (maxRank > 0);
+				rankToPriceCheck = 0;
 			}
 		}
-		
-		this.compatibility = trimAndCapitalizeCorrectly(compatName);
-		this.rarity = trimAndCapitalizeCorrectly(getStrProp(jsonObject, RARITY));
-		this.isAugment = jsonObject.has(AUGMENT.value) ? getBoolProp(jsonObject, AUGMENT) : false;
-		this.isSet = (jsonObject.has(MOD_SET.value));
-	}
 
-	@Override
-	public String getDataSuffix(){
-		TokenList outputTokens = new TokenList();
-		
-		outputTokens.add(isRanked ? rankToPriceCheck : null);
-		outputTokens.add((maxRank == 0) ? null : maxRank);
-		outputTokens.add(type);
-		outputTokens.add(compatibility);
-		outputTokens.add(rarity);
-		outputTokens.add(isAugment);
-		outputTokens.add(isSet);
-		outputTokens.add(isConclaveOnly);
-
-		return outputTokens.toCSV();
-	}
-
-	public static String getHeaderSuffix(){
-		return DATA_HEADER_SUFFIX;
+		setResult(ModFieldEnum.Rank,isRanked ? rankToPriceCheck : null);
+		setResult(ModFieldEnum.MaxRank,(maxRank == 0) ? null : maxRank);
+		setResult(ModFieldEnum.Compatibility,trimAndCapitalizeCorrectly(compatName));
+		setResult(ModFieldEnum.Rarity,trimAndCapitalizeCorrectly(getStrProp(jsonObject, RARITY)));
+		setResult(ModFieldEnum.IsAugment,jsonObject.has(AUGMENT.value) ? getBoolProp(jsonObject, AUGMENT) : false);
+		setResult(ModFieldEnum.IsSet,jsonObject.has(MOD_SET.value));
 	}
 
 	@Override
@@ -118,7 +100,29 @@ public class Mod extends StandardPricedWarframeItem{
 	}
 
 	@Override
-	public void populateTradeStats(WarframeMarketHandler marketHandler) throws IOException, InterruptedException{
-		marketHandler.processItemStandard(this);
+	public void populateTradeStats(WarframeMarketHandler marketHandler) throws IOException, InterruptedException {
+		TradeStatsPair tradeStats = marketHandler.getAndProcessTradeData(getName(), isRanked(), getRankToPriceCheck());
+
+		setResult(ModFieldEnum.Num48Hr, tradeStats.stats48Hrs.numSales);
+		if (tradeStats.stats48Hrs.numSales > 0) {
+			setResult(ModFieldEnum.Avg48Hr, tradeStats.stats48Hrs.avgPrice);
+			setResult(ModFieldEnum.High48Hr, tradeStats.stats48Hrs.maxPrice);
+			setResult(ModFieldEnum.Low48Hr, tradeStats.stats48Hrs.minPrice);
+		} else {
+			setResult(ModFieldEnum.Avg48Hr, NA);
+			setResult(ModFieldEnum.High48Hr, NA);
+			setResult(ModFieldEnum.Low48Hr, NA);
+		}
+
+		setResult(ModFieldEnum.Num90Day, tradeStats.stats90Days.numSales);
+		if (tradeStats.stats90Days.numSales > 0) {
+			setResult(ModFieldEnum.Avg90Day, tradeStats.stats90Days.avgPrice);
+			setResult(ModFieldEnum.High90Day, tradeStats.stats90Days.maxPrice);
+			setResult(ModFieldEnum.Low90Day, tradeStats.stats90Days.minPrice);
+		} else {
+			setResult(ModFieldEnum.Avg90Day, NA);
+			setResult(ModFieldEnum.High90Day, NA);
+			setResult(ModFieldEnum.Low90Day, NA);
+		}
 	}
 }

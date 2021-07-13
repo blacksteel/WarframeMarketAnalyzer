@@ -1,8 +1,22 @@
 package dataSourceHandlers;
 
-import static enums.jsonProps.WarframeMarketPropName.*;
+import static enums.jsonProps.WarframeMarketPropName.AVG_PRICE;
+import static enums.jsonProps.WarframeMarketPropName.CLOSED_TRADES_STATS;
+import static enums.jsonProps.WarframeMarketPropName.ITEMS;
+import static enums.jsonProps.WarframeMarketPropName.ITEM_NAME;
+import static enums.jsonProps.WarframeMarketPropName.MAX_PRICE;
+import static enums.jsonProps.WarframeMarketPropName.MIN_PRICE;
+import static enums.jsonProps.WarframeMarketPropName.NUM_SALES;
+import static enums.jsonProps.WarframeMarketPropName.PAYLOAD;
+import static enums.jsonProps.WarframeMarketPropName.RANK;
+import static enums.jsonProps.WarframeMarketPropName.TIME_PERIOD_48HRS;
+import static enums.jsonProps.WarframeMarketPropName.TIME_PERIOD_90DAYS;
 import static main.MainRunner.getGson;
-import static utils.JSONUtils.*;
+import static utils.JSONUtils.getDblProp;
+import static utils.JSONUtils.getIntProp;
+import static utils.JSONUtils.getJsonArray;
+import static utils.JSONUtils.getJsonObj;
+import static utils.JSONUtils.getStrProp;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -16,12 +30,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import enums.VoidRelicRefinement;
-import items.VoidRelic;
 import items.WarframeItem;
 import main.Config;
 import tradeStats.StandardTradeStats;
-import tradeStats.VoidRelicTradeStats;
 
 public class WarframeMarketHandler extends DataSourceHandler{
 	private static final String WF_MARKET_BASE_URL = "https://api.warframe.market/v1/items";
@@ -42,7 +53,7 @@ public class WarframeMarketHandler extends DataSourceHandler{
 	protected static boolean isTradableItem(String itemName) throws IOException{
 		return getTradableItemNamesList().contains(itemName.toLowerCase());
 	}
-	
+
 	private static List<String> getTradableItemNamesList() throws IOException{
 		if(tradableItemNamesList == null) {
 			tradableItemNamesList = getTradableItemsListFromMarket();
@@ -66,38 +77,15 @@ public class WarframeMarketHandler extends DataSourceHandler{
 		return output;
 	}
 
-	public void processItems(List<? extends WarframeItem> items) throws IOException, InterruptedException{		
-		for(WarframeItem item: items){
-			if(Config.WRITE_DEBUG_INFO_TO_CONSOLE) System.out.println("Processing item: " + item.name);
-			
+	public void processItems(List<? extends WarframeItem<?>> items) throws IOException, InterruptedException{
+		for(WarframeItem<?> item: items){
+			if(Config.WRITE_DEBUG_INFO_TO_CONSOLE) System.out.println("Processing item: " + item.getName());
+
 			item.populateTradeStats(this);
 		}
 	}
 
-	public void processItemStandard(WarframeItem item) throws IOException, InterruptedException{
-		TradeStatsPair tradeStats = getAndProcessTradeData(item.name, item.isRanked(), item.getRankToPriceCheck());
-		item.setTradeStats48Hours(tradeStats.stats48Hrs);
-		item.setTradeStats90Days(tradeStats.stats90Days);
-	}
-
-	public void processVoidRelic(VoidRelic relic) throws IOException, InterruptedException{
-		VoidRelicTradeStats stats48Hrs = new VoidRelicTradeStats();
-		VoidRelicTradeStats stats90Days = new VoidRelicTradeStats();
-
-		for(VoidRelicRefinement refinement: VoidRelicRefinement.values()){
-			String relicFullName = relic.name + " " + refinement.name;
-			TradeStatsPair tradeStats =
-					getAndProcessTradeData(relicFullName, relic.isRanked(), relic.getRankToPriceCheck());
-
-			stats48Hrs.tradeStats.put(refinement, tradeStats.stats48Hrs);
-			stats90Days.tradeStats.put(refinement, tradeStats.stats90Days);
-		}
-
-		relic.setTradeStats48Hours(stats48Hrs);
-		relic.setTradeStats90Days(stats90Days);
-	}
-
-	private TradeStatsPair getAndProcessTradeData(String itemName, boolean isRanked, int rankToPriceCheck)
+	public TradeStatsPair getAndProcessTradeData(String itemName, boolean isRanked, int rankToPriceCheck)
 			throws IOException, InterruptedException{
 		sleepBetweenMarketRequests();
 
@@ -107,7 +95,7 @@ public class WarframeMarketHandler extends DataSourceHandler{
 				getWFMarketURLItemStatsSuffix(itemName), new String[]{"platform", "language"}, new String[]{"pc", "en"});
 
 		lastMarketRequestTimes.add(System.currentTimeMillis());
-		
+
 		if(marketPayload != null){
 			JsonObject tradeInfo = getGson().fromJson(marketPayload.toString(), JsonObject.class);
 
@@ -168,7 +156,7 @@ public class WarframeMarketHandler extends DataSourceHandler{
 		return "/" + itemName + WF_MARKET_URL_ITEM_STATS_SUFFIX;
 	}
 
-	private class TradeStatsPair{
+	public class TradeStatsPair{
 		public final StandardTradeStats stats48Hrs;
 		public final StandardTradeStats stats90Days;
 

@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.StringTokenizer;
 
 public class MiscUtils {
+
+	private static final SimpleDateFormat SDF = new SimpleDateFormat("MMM dd yyyy HH:mm");
+
 	public static String padString(String string, int desiredLength) {
 		for(int i = string.length(); i < desiredLength; ++i) {
 			string += ' ';
@@ -72,8 +75,7 @@ public class MiscUtils {
 	}
 	
 	public static String getDate(long timeInMillis){
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm");    
 		Date resultdate = new Date(timeInMillis);
-		return sdf.format(resultdate);
+		return SDF.format(resultdate);
 	}
 }

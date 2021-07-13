@@ -6,6 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Tim/git/WarframeMarketAnalyzer/Dependencies/gson-2.8.6.jar"/>
-	<classpathentry kind="output" path="WarframeMarketTools/bin"/>
+	<classpathentry kind="lib" path="Dependencies/gson-2.8.6.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
